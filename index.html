@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Track + Cutting</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f0f;color:#e0e0e0;font-family:sans-serif;padding:12px}
+.shop{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:12px;margin-bottom:12px}
+.shop h2{color:#c9a84c;font-size:1.2rem}
+.shop p{color:#888;font-size:0.85rem;margin-top:3px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.tab{padding:11px 6px;border-radius:8px;border:2px solid #333;background:#1a1a1a;color:#888;font-size:0.9rem;cursor:pointer;text-align:center;font-weight:bold}
+.tab.on{border-color:#c9a84c;color:#c9a84c;background:#1e1a0f}
+.pg{display:none}
+.pg.on{display:block}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;margin-bottom:10px}
+.card h3{color:#c9a84c;font-size:1rem;font-weight:bold;margin-bottom:10px;text-transform:uppercase}
+.fbox{background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:11px;margin-bottom:10px;font-size:0.82rem;line-height:1.9}
+.fbox h3{color:#c9a84c;font-size:0.9rem;margin-bottom:5px}
+.tag{background:#252525;border:1px solid #333;padding:1px 6px;border-radius:4px;font-size:0.75rem;color:#e8c96a;margin-left:3px}
+.row{display:flex;gap:10px;margin-bottom:10px}
+.grp{flex:1}
+label{display:block;font-size:0.72rem;color:#888;margin-bottom:4px;text-transform:uppercase}
+input{width:100%;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#e0e0e0;font-size:1rem;outline:none;-webkit-appearance:none}
+input:focus{border-color:#c9a84c}
+.btn{width:100%;background:#c9a84c;color:#0f0f0f;border:none;padding:13px;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;margin-top:6px}
+.res{display:none;margin-top:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rc{background:#252525;border:1px solid #333;border-radius:8px;padding:10px;text-align:center}
+.rc.hl{border-color:#c9a84c;background:#1e1a0f}
+.rl{font-size:0.7rem;color:#888;text-transform:uppercase;margin-bottom:3px}
+.rv{font-size:1.3rem;color:#e0e0e0;font-weight:bold}
+.rc.hl .rv{color:#c9a84c}
+.bd{background:#252525;border-radius:8px;padding:10px;margin-bottom:8px}
+.bd h4{color:#e8c96a;font-size:0.85rem;font-weight:bold;margin-bottom:7px;text-transform:uppercase}
+.br{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #333;font-size:0.82rem}
+.br:last-child{border:none}
+.bn{color:#888}
+.bv{color:#e0e0e0;font-weight:bold}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;margin-top:5px;font-size:1.1rem;font-weight:bold}
+.footer{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:10px;margin-top:10px}
+.footer h3{color:#c9a84c;font-size:1rem}
+.footer p{color:#888;font-size:0.82rem;margin-top:2px}
+.hint{background:#252525;border-radius:6px;padding:7px 10px;margin-bottom:8px;font-size:0.78rem;color:#888}
+.glass-box{background:#0f1f2f;border:1px solid #4a8ab5;border-radius:8px;padding:10px;margin-top:7px}
+.glass-box h4{color:#7db8ff;font-size:0.85rem;font-weight:bold;margin-bottom:7px}
+</style>
+</head>
+<body>
+
+<div class="shop">
+  <h2>🏪 ADEEL WELDING & ALUMINIUM HOUSE</h2>
+  <p>📞 0321-7378024</p>
+</div>
+
+<div class="tabs">
+  <div class="tab on" id="tab1" onclick="goPage('three')">🪟 THREE TRACK</div>
+  <div class="tab" id="tab2" onclick="goPage('cutting')">✂️ CUTTING</div>
+</div>
+
+<!-- THREE TRACK -->
+<div class="pg on" id="pg-three">
+  <div class="fbox">
+    <h3>📐 Formula</h3>
+    DC26F Bottom W+6" <span class="tag">880</span><br>
+    DC30F Top+2Sides H+6" <span class="tag">754</span><br>
+    M23 2pcs H exact <span class="tag">354</span><br>
+    M28 2pcs H exact <span class="tag">431</span><br>
+    M24 2pcs W exact <span class="tag">420</span><br>
+    D29 2H+1W exact <span class="tag">274</span>
+  </div>
+  <div class="card">
+    <h3>📏 Size Daalen</h3>
+    <div class="row">
+      <div class="grp"><label>Width (inches)</label><input id="t1" type="number" placeholder="48"></div>
+      <div class="grp"><label>Height (inches)</label><input id="t2" type="number" placeholder="48"></div>
+    </div>
+    <div class="row">
+      <div class="grp"><label>Qty</label><input id="t3" type="number" value="1"></div>
+      <div class="grp"><label>Discount %</label><input id="t4" type="number" value="0"></div>
+    </div>
+    <div class="row">
+      <div class="grp"><label>Glass (per sqft)</label><input id="t5" type="number" value="0"></div>
+      <div class="grp"><label>Accessories</label><input id="t6" type="number" value="0"></div>
+    </div>
+    <div class="row">
+      <div class="grp"><label>Labour (per sqft)</label><input id="t7" type="number" value="0"></div>
+    </div>
+    <button class="btn" onclick="calcThree()">CALCULATE ▶</button>
+  </div>
+  <div class="res" id="t-res">
+    <div class="g2">
+      <div class="rc"><div class="rl">Size</div><div class="rv" id="t-sz">—</div></div>
+      <div class="rc hl"><div class="rl">Qty</div><div class="rv" id="t-qt">—</div></div>
+      <div class="rc"><div class="rl">Sqft</div><div class="rv" id="t-sf">—</div></div>
+      <div class="rc"><div class="rl">Pieces</div><div class="rv">13</div></div>
+    </div>
+    <div class="bd">
+      <h4>🔩 Pieces</h4>
+      <div class="br"><span class="bn">DC26F Bottom</span><span class="bv" id="t-p1">—</span></div>
+      <div class="br"><span class="bn">DC30F Top</span><span class="bv" id="t-p2">—</span></div>
+      <div class="br"><span class="bn">DC30F Left</span><span class="bv" id="t-p3">—</span></div>
+      <div class="br"><span class="bn">DC30F Right</span><span class="bv" id="t-p4">—</span></div>
+      <div class="br"><span class="bn">M23 x2</span><span class="bv" id="t-p5">—</span></div>
+      <div class="br"><span class="bn">M28 x2</span><span class="bv" id="t-p6">—</span></div>
+      <div class="br"><span class="bn">M24 x2</span><span class="bv" id="t-p7">—</span></div>
+      <div class="br"><span class="bn">D29 x2 H</span><span class="bv" id="t-p8">—</span></div>
+      <div class="br"><span class="bn">D29 x1 W</span><span class="bv" id="t-p9">—</span></div>
+    </div>
+    <div class="bd">
+      <h4>💰 Rates</h4>
+      <div class="br"><span class="bn">DC26F</span><span class="bv" id="t-r1">—</span></div>
+      <div class="br"><span class="bn">DC30F</span><span class="bv" id="t-r2">—</span></div>
+      <div class="br"><span class="bn">M23</span><span class="bv" id="t-r3">—</span></div>
+      <div class="br"><span class="bn">M28</span><span class="bv" id="t-r4">—</span></div>
+      <div class="br"><span class="bn">M24</span><span class="bv" id="t-r5">—</span></div>
+      <div class="br"><span class="bn">D29</span><span class="bv" id="t-r6">—</span></div>
+    </div>
+    <div class="tr" style="background:#333;color:#ccc"><span>SECTIONS TOTAL</span><span id="t-gross">—</span></div>
+    <div class="tr" style="background:#1e1a0f;color:#c9a84c"><span>DISCOUNT (<span id="t-dp">0</span>%)</span><span id="t-da">—</span></div>
+    <div class="tr" style="background:#2a2a2a;color:#ccc"><span>NET SECTIONS</span><span id="t-net">—</span></div>
+    <div class="tr" style="background:#1a3a1a;color:#7dff7d"><span>+ GLASS</span><span id="t-gl">—</span></div>
+    <div class="tr" style="background:#1a2a3a;color:#7db8ff"><span>+ ACCESSORIES</span><span id="t-ac">—</span></div>
+    <div class="tr" style="background:#2a1a3a;color:#d4a0ff"><span>+ LABOUR</span><span id="t-lb">—</span></div>
+    <div class="tr" style="background:#c9a84c;color:#000;font-size:1.2rem"><span>GRAND TOTAL</span><span id="t-fin">—</span></div>
+    <div class="tr" style="background:#0f1f0f;color:#c9a84c;border:1px solid #c9a84c"><span>PER SQFT</span><span id="t-ps">—</span></div>
+    <div class="footer"><h3>🏪 ADEEL WELDING & ALUMINIUM HOUSE</h3><p>📞 0321-7378024</p></div>
+  </div>
+</div>
+
+<!-- CUTTING -->
+<div class="pg" id="pg-cutting">
+  <div class="fbox">
+    <h3>✂️ Cutting Formula</h3>
+    M23/M28: Height - 1"6sot (4 pcs)<br>
+    M24: (Width-6") ÷ 2 (4 pcs)<br>
+    D29: 2pcs=M23 | 2pcs=M24+2"<br>
+    Glass H: M23-4"1sot | Glass W: M24+4sot
+  </div>
+  <div class="card">
+    <h3>📏 Frame Size Daalen</h3>
+    <div class="row">
+      <div class="grp"><label>Width Inches</label><input id="cu1" type="number" placeholder="48"></div>
+      <div class="grp"><label>Width Sot (0-7)</label><input id="cu2" type="number" value="0" min="0" max="7"></div>
+    </div>
+    <div class="row">
+      <div class="grp"><label>Height Inches</label><input id="cu3" type="number" placeholder="48"></div>
+      <div class="grp"><label>Height Sot (0-7)</label><input id="cu4" type="number" value="0" min="0" max="7"></div>
+    </div>
+    <div class="hint">💡 1 inch = 8 sot</div>
+    <button class="btn" onclick="calcCut()">CUTTING NIKALEN ▶</button>
+  </div>
+  <div class="res" id="cu-res">
+    <div class="bd">
+      <h4>M23/M28 — 4 pcs</h4>
+      <div class="br"><span class="bn">Height - 1"6sot</span><span class="bv" style="color:#7dff7d" id="cu-m23">—</span></div>
+    </div>
+    <div class="bd">
+      <h4>M24 — 4 pcs</h4>
+      <div class="br"><span class="bn">(Width-6") ÷ 2</span><span class="bv" style="color:#7dff7d" id="cu-m24">—</span></div>
+    </div>
+    <div class="bd">
+      <h4>D29 — 4 pcs</h4>
+      <div class="br"><span class="bn">2 pcs — M23 size</span><span class="bv" style="color:#7dff7d" id="cu-d1">—</span></div>
+      <div class="br"><span class="bn">2 pcs — M24+2"</span><span class="bv" style="color:#7dff7d" id="cu-d2">—</span></div>
+    </div>
+    <div class="glass-box">
+      <h4>🪟 GLASS SIZE</h4>
+      <div class="br"><span class="bn">Glass Height</span><span class="bv" style="color:#7db8ff" id="cu-gh">—</span></div>
+      <div class="br"><span class="bn">Glass Width</span><span class="bv" style="color:#7db8ff" id="cu-gw">—</span></div>
+    </div>
+    <div class="footer"><h3>🏪 ADEEL WELDING & ALUMINIUM HOUSE</h3><p>📞 0321-7378024</p></div>
+  </div>
+</div>
+
+<script>
+function rs(n){return 'Rs.'+Math.round(n);}
+function disp(d){var i=Math.floor(d),s=Math.round((d-i)*8);if(s===8){i++;s=0;}return s===0?i+'"':i+'" '+s+' sot';}
+
+function goPage(name){
+  document.getElementById('pg-three').className='pg'+(name==='three'?' on':'');
+  document.getElementById('pg-cutting').className='pg'+(name==='cutting'?' on':'');
+  document.getElementById('tab1').className='tab'+(name==='three'?' on':'');
+  document.getElementById('tab2').className='tab'+(name==='cutting'?' on':'');
+}
+
+function calcThree(){
+  var w=parseFloat(document.getElementById('t1').value);
+  var h=parseFloat(document.getElementById('t2').value);
+  var qty=parseInt(document.getElementById('t3').value)||1;
+  var disc=parseFloat(document.getElementById('t4').value)||0;
+  var gr=parseFloat(document.getElementById('t5').value)||0;
+  var ac=parseFloat(document.getElementById('t6').value)||0;
+  var lr=parseFloat(document.getElementById('t7').value)||0;
+  if(!w||!h){alert('Width aur Height daalen!');return;}
+  var c1=(w+6)*qty/12*880,c2=((w+6)+(h+6)+(h+6))*qty/12*754,c3=h*2*qty/12*354,c4=h*2*qty/12*431,c5=w*2*qty/12*420,c6=((h*2)+w)*qty/12*274;
+  var gross=c1+c2+c3+c4+c5+c6,da=gross*disc/100,net=gross-da;
+  var gsf=((w-5)/12)*((h-5)/12)*qty,cg=gsf*gr,ca=ac*qty,sqft=((w+3)/12)*((h+3)/12)*qty,cl=sqft*lr,fin=net+cg+ca+cl;
+  document.getElementById('t-sz').textContent=w+'" x '+h+'"';
+  document.getElementById('t-qt').textContent=qty;
+  document.getElementById('t-sf').textContent=sqft.toFixed(2);
+  document.getElementById('t-p1').textContent=(w+6)+'"';document.getElementById('t-p2').textContent=(w+6)+'"';
+  document.getElementById('t-p3').textContent=(h+6)+'"';document.getElementById('t-p4').textContent=(h+6)+'"';
+  document.getElementById('t-p5').textContent=h+'" x2';document.getElementById('t-p6').textContent=h+'" x2';
+  document.getElementById('t-p7').textContent=w+'" x2';document.getElementById('t-p8').textContent=h+'" x2';
+  document.getElementById('t-p9').textContent=w+'" x1';
+  document.getElementById('t-r1').textContent=rs(c1);document.getElementById('t-r2').textContent=rs(c2);
+  document.getElementById('t-r3').textContent=rs(c3);document.getElementById('t-r4').textContent=rs(c4);
+  document.getElementById('t-r5').textContent=rs(c5);document.getElementById('t-r6').textContent=rs(c6);
+  document.getElementById('t-gross').textContent=rs(gross);document.getElementById('t-dp').textContent=disc;
+  document.getElementById('t-da').textContent='-'+rs(da);document.getElementById('t-net').textContent=rs(net);
+  document.getElementById('t-gl').textContent=gr>0?rs(cg):'—';document.getElementById('t-ac').textContent=ac>0?rs(ca):'—';
+  document.getElementById('t-lb').textContent=lr>0?rs(cl):'—';document.getElementById('t-fin').textContent=rs(fin);
+  document.getElementById('t-ps').textContent=sqft>0?rs(fin/sqft)+'/sqft':'—';
+  document.getElementById('t-res').style.display='block';
+  document.getElementById('t-res').scrollIntoView({behavior:'smooth'});
+}
+
+function calcCut(){
+  var wi=parseFloat(document.getElementById('cu1').value)||0;
+  var ws=parseFloat(document.getElementById('cu2').value)||0;
+  var hi=parseFloat(document.getElementById('cu3').value)||0;
+  var hs=parseFloat(document.getElementById('cu4').value)||0;
+  if(!wi||!hi){alert('Width aur Height daalen!');return;}
+  var w=wi+(ws/8),h=hi+(hs/8),m23=h-1.75,m24=(w-6)/2;
+  document.getElementById('cu-m23').textContent=disp(m23);
+  document.getElementById('cu-m24').textContent=disp(m24);
+  document.getElementById('cu-d1').textContent=disp(m23);
+  document.getElementById('cu-d2').textContent=disp(m24+2);
+  document.getElementById('cu-gh').textContent=disp(m23-4.125);
+  document.getElementById('cu-gw').textContent=disp(m24+0.5);
+  document.getElementById('cu-res').style.display='block';
+  document.getElementById('cu-res').scrollIntoView({behavior:'smooth'});
+}
+
+// PASSWORD
+var C=0,U=0;
+function chk(){
+  try{
+    U=parseInt(localStorage.getItem('u')||'0');
+    if(localStorage.getItem('ok')==='1')return true;
+    U++;localStorage.setItem('u',U);
+    if(U<=2)return true;
+    return false;
+  }catch(e){C++;return C<=2;}
+}
+function showLock(){
+  var o=document.createElement('div');
+  o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,0.97);display:flex;align-items:center;justify-content:center;';
+  o.innerHTML='<div style="background:#1a1a1a;border:2px solid #c9a84c;border-radius:12px;padding:24px;text-align:center;width:280px;"><p style="color:#c9a84c;font-size:1.1rem;font-weight:bold;margin-bottom:8px">🔒 PROTECTED</p><p style="color:#888;font-size:0.82rem;margin-bottom:12px">Adeel Welding ke liye hai</p><input id="pi" type="password" placeholder="Password daalen..." style="width:100%;padding:10px;border-radius:6px;border:1px solid #555;background:#252525;color:#fff;font-size:1rem;margin-bottom:10px;outline:none;"><br><button onclick="tryP()" style="width:100%;background:#c9a84c;border:none;padding:11px;border-radius:6px;font-size:1rem;cursor:pointer;font-weight:bold">🔑 OPEN</button><p id="pe" style="color:#ff6b6b;font-size:0.8rem;margin-top:8px;display:none">Galat password!</p></div>';
+  document.body.appendChild(o);
+}
+function tryP(){
+  var p=document.getElementById('pi').value;
+  if(p==='Hassanm8480317'){
+    try{localStorage.setItem('ok','1');}catch(e){}
+    location.reload();
+  }else{
+    document.getElementById('pe').style.display='block';
+    document.getElementById('pi').value='';
+  }
+}
+if(!chk())showLock();
+</script>
+</body>
+</html>
