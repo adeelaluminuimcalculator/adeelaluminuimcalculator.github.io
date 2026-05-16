@@ -126,7 +126,10 @@ input:focus{border-color:#c9a84c}
       <h4>💰 Rates</h4>
       <div class="br"><span class="bn">DC26F</span><span class="bv" id="t-r1">—</span></div>
       <div class="br"><span class="bn">DC30F</span><span class="bv" id="t-r2">—</span></div>
-< truncated lines 129-168 >
+      <div class="br"><span class="bn">M23</span><span class="bv" id="t-r3">—</span></div>
+< truncated lines 130-166 >
+  </div>
+  <div class="res" id="cu-res">
     <div class="bd">
       <h4>M23/M28 — 4 pcs</h4>
       <div class="br"><span class="bn">Height - 1"6sot</span><span class="bv" style="color:#7dff7d" id="cu-m23">—</span></div>
@@ -204,7 +207,6 @@ function calcThree(){
   document.getElementById('t-lb').textContent=lr>0?rs(cl):'—';document.getElementById('t-fin').textContent=rs(fin);
   document.getElementById('t-ps').textContent=sqft>0?rs(fin/sqft)+'/sqft':'—';
   document.getElementById('t-res').style.display='block';
-  document.getElementById('t-res').scrollIntoView({behavior:'smooth'});
 }
 
 function calcCut(){
@@ -221,7 +223,6 @@ function calcCut(){
   document.getElementById('cu-gh').textContent=disp(m23-4.125);
   document.getElementById('cu-gw').textContent=disp(m24+0.5);
   document.getElementById('cu-res').style.display='block';
-  document.getElementById('cu-res').scrollIntoView({behavior:'smooth'});
 }
 
 // PASSWORD
