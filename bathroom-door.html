@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bathroom Door</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f0f;color:#e0e0e0;font-family:sans-serif;padding:12px}
+.shop{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:12px;margin-bottom:12px}
+.shop h2{color:#c9a84c;font-size:1.2rem}
+.shop p{color:#888;font-size:0.85rem;margin-top:3px}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;margin-bottom:10px}
+.card h3{color:#c9a84c;font-size:1rem;font-weight:bold;margin-bottom:10px;text-transform:uppercase}
+.fbox{background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:11px;margin-bottom:10px;font-size:0.82rem;line-height:1.9}
+.fbox h3{color:#c9a84c;font-size:0.9rem;margin-bottom:5px}
+.tag{background:#252525;border:1px solid #333;padding:1px 6px;border-radius:4px;font-size:0.75rem;color:#e8c96a;margin-left:3px}
+.row{display:flex;gap:10px;margin-bottom:10px}
+.grp{flex:1}
+label{display:block;font-size:0.72rem;color:#888;margin-bottom:4px;text-transform:uppercase}
+input{width:100%;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#e0e0e0;font-size:1rem;outline:none;-webkit-appearance:none}
+input:focus{border-color:#c9a84c}
+select{width:100%;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#e0e0e0;font-size:1rem;outline:none;}
+.btn{width:100%;background:#c9a84c;color:#0f0f0f;border:none;padding:13px;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;margin-top:6px}
+.res{display:none;margin-top:10px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.rc{background:#252525;border:1px solid #333;border-radius:8px;padding:10px;text-align:center}
+.rc.hl{border-color:#c9a84c;background:#1e1a0f}
+.rl{font-size:0.7rem;color:#888;text-transform:uppercase;margin-bottom:3px}
+.rv{font-size:1.3rem;color:#e0e0e0;font-weight:bold}
+.rc.hl .rv{color:#c9a84c}
+.bd{background:#252525;border-radius:8px;padding:10px;margin-bottom:8px}
+.bd h4{color:#e8c96a;font-size:0.85rem;font-weight:bold;margin-bottom:7px;text-transform:uppercase}
+.br{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #333;font-size:0.82rem}
+.br:last-child{border:none}
+.bn{color:#888}
+.bv{color:#e0e0e0;font-weight:bold}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;margin-top:5px;font-size:1.1rem;font-weight:bold}
+.footer{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:10px;margin-top:10px}
+.footer h3{color:#c9a84c;font-size:1rem}
+.footer p{color:#888;font-size:0.82rem;margin-top:2px}
+.type-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.type-btn{padding:10px;border-radius:8px;border:2px solid #333;background:#252525;color:#888;font-size:0.9rem;cursor:pointer;text-align:center;font-weight:bold}
+.type-btn.on{border-color:#c9a84c;color:#c9a84c;background:#1e1a0f}
+</style>
+</head>
+<body>
+
+<div class="shop">
+  <h2>🏪 ADEEL WELDING & ALUMINIUM HOUSE</h2>
+  <p>📞 0321-7378024</p>
+</div>
+
+<div style="text-align:center;background:#1a1a1a;border:2px solid #c9a84c;border-radius:10px;padding:10px;margin-bottom:12px">
+  <span style="color:#c9a84c;font-size:1.2rem;font-weight:bold">🚪 BATHROOM DOOR CALCULATOR</span>
+</div>
+
+<div class="fbox">
+  <h3>📐 Formula & Rates</h3>
+  D54A Outer Frame same size <span class="tag">395/484/578</span><br>
+  D50A Inner Frame same size <span class="tag">488/582/708</span><br>
+  D52 Divider 1pc W exact <span class="tag">432/513/620</span><br>
+  D61 Patti W-3" × H÷3.74" <span class="tag">512/411</span>
+</div>
+
+<div class="card">
+  <h3>📏 Door Size</h3>
+  <div class="row">
+    <div class="grp"><label>Thickness</label>
+      <select id="mm">
+        <option value="1">1.2mm</option>
+        <option value="2">1.6mm</option>
+        <option value="3">2mm</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="grp"><label>Width (inches)</label><input id="w1" type="number" placeholder="30"></div>
+    <div class="grp"><label>Height (inches)</label><input id="h1" type="number" placeholder="78"></div>
+  </div>
+  <div class="row">
+    <div class="grp"><label>Qty</label><input id="q1" type="number" value="1"></div>
+    <div class="grp"><label>Discount %</label><input id="d1" type="number" value="0"></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>🚪 Door Type</h3>
+  <div class="type-btns">
+    <div class="type-btn on" id="btn-full" onclick="setType('full')">🔲 Full D61</div>
+    <div class="type-btn" id="btn-half" onclick="setType('half')">🔲 2ft D61 + Glass</div>
+  </div>
+  <div id="glass-opt" style="display:none">
+    <div class="row">
+      <div class="grp"><label>🪟 Glass Rate (per sqft)</label><input id="gr" type="number" value="0"></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>💰 Extra Costs</h3>
+  <div class="row">
+    <div class="grp"><label>🔧 Accessories (Rs.)</label><input id="ac" type="number" value="0"></div>
+    <div class="grp"><label>👷 Labour (per sqft)</label><input id="lr" type="number" value="0"></div>
+  </div>
+  <button class="btn" onclick="calc()">CALCULATE ▶</button>
+</div>
+
+<div class="res" id="res">
+  <div class="g2">
+    <div class="rc"><div class="rl">Door Size</div><div class="rv" id="o-sz">—</div></div>
+    <div class="rc hl"><div class="rl">Qty</div><div class="rv" id="o-qt">—</div></div>
+    <div class="rc"><div class="rl">Sqft</div><div class="rv" id="o-sf">—</div></div>
+    <div class="rc"><div class="rl">Thickness</div><div class="rv" id="o-mm">—</div></div>
+  </div>
+
+  <div class="bd">
+    <h4>🔩 D54A — Outer Frame (4 pcs)</h4>
+    <div class="br"><span class="bn">2 pcs Width</span><span class="bv" id="p-d54w">—</span></div>
+    <div class="br"><span class="bn">2 pcs Height</span><span class="bv" id="p-d54h">—</span></div>
+  </div>
+
+  <div class="bd">
+    <h4>🔩 D50A — Inner Frame (4 pcs)</h4>
+    <div class="br"><span class="bn">2 pcs Width</span><span class="bv" id="p-d50w">—</span></div>
+    <div class="br"><span class="bn">2 pcs Height</span><span class="bv" id="p-d50h">—</span></div>
+  </div>
+
+  <div class="bd">
+    <h4>🔩 D52 — Divider (1 pc)</h4>
+    <div class="br"><span class="bn">Width exact</span><span class="bv" id="p-d52">—</span></div>
+  </div>
+
+  <div class="bd">
+    <h4>🔩 D61 — Pattiyaan</h4>
+    <div class="br"><span class="bn">Patti Size (W-3")</span><span class="bv" id="p-d61sz">—</span></div>
+    <div class="br"><span class="bn">Pattiyaan Count</span><span class="bv" id="p-d61ct">—</span></div>
+    <div class="br"><span class="bn">D61 Height</span><span class="bv" id="p-d61h">—</span></div>
+  </div>
+
+  <div class="bd" id="glass-res" style="display:none">
+    <h4>🪟 Glass</h4>
+    <div class="br"><span class="bn">Glass Size</span><span class="bv" id="p-glsz">—</span></div>
+    <div class="br"><span class="bn">Glass Sqft</span><span class="bv" id="p-glsf">—</span></div>
+  </div>
+
+  <div class="bd">
+    <h4>💰 Rates</h4>
+    <div class="br"><span class="bn">D54A</span><span class="bv" id="r-d54">—</span></div>
+    <div class="br"><span class="bn">D50A</span><span class="bv" id="r-d50">—</span></div>
+    <div class="br"><span class="bn">D52</span><span class="bv" id="r-d52">—</span></div>
+    <div class="br"><span class="bn">D61</span><span class="bv" id="r-d61">—</span></div>
+  </div>
+
+  <div class="tr" style="background:#333;color:#ccc"><span>SECTIONS TOTAL</span><span id="o-gross">—</span></div>
+  <div class="tr" style="background:#1e1a0f;color:#c9a84c"><span>DISCOUNT (<span id="o-dp">0</span>%)</span><span id="o-da">—</span></div>
+  <div class="tr" style="background:#2a2a2a;color:#ccc"><span>NET SECTIONS</span><span id="o-net">—</span></div>
+  <div class="tr" style="background:#1a3a1a;color:#7dff7d"><span>+ GLASS</span><span id="o-gl">—</span></div>
+  <div class="tr" style="background:#1a2a3a;color:#7db8ff"><span>+ ACCESSORIES</span><span id="o-ac">—</span></div>
+  <div class="tr" style="background:#2a1a3a;color:#d4a0ff"><span>+ LABOUR</span><span id="o-lb">—</span></div>
+  <div class="tr" style="background:#c9a84c;color:#000;font-size:1.2rem"><span>GRAND TOTAL</span><span id="o-fin">—</span></div>
+  <div class="tr" style="background:#0f1f0f;color:#c9a84c;border:1px solid #c9a84c"><span>PER SQFT</span><span id="o-ps">—</span></div>
+
+  <div class="footer"><h3>🏪 ADEEL WELDING & ALUMINIUM HOUSE</h3><p>📞 0321-7378024</p></div>
+</div>
+
+<script>
+function rs(n){return 'Rs.'+Math.round(n);}
+var doorType='full';
+
+function setType(t){
+  doorType=t;
+  document.getElementById('btn-full').className='type-btn'+(t==='full'?' on':'');
+  document.getElementById('btn-half').className='type-btn'+(t==='half'?' on':'');
+  document.getElementById('glass-opt').style.display=t==='half'?'block':'none';
+}
+
+function calc(){
+  var w=parseFloat(document.getElementById('w1').value);
+  var h=parseFloat(document.getElementById('h1').value);
+  var qty=parseInt(document.getElementById('q1').value)||1;
+  var disc=parseFloat(document.getElementById('d1').value)||0;
+  var ac=parseFloat(document.getElementById('ac').value)||0;
+  var lr=parseFloat(document.getElementById('lr').value)||0;
+  var gr=parseFloat(document.getElementById('gr').value)||0;
+  var mm=parseInt(document.getElementById('mm').value)||1;
+
+  if(!w||!h){alert('Width aur Height daalen!');return;}
+
+  var rD54A,rD50A,rD52,rD61,mmLabel;
+  if(mm==2){rD54A=484;rD50A=582;rD52=513;rD61=411;mmLabel='1.6mm';}
+  else if(mm==3){rD54A=578;rD50A=708;rD52=620;rD61=411;mmLabel='2mm';}
+  else{rD54A=395;rD50A=488;rD52=432;rD61=512;mmLabel='1.2mm';}
+
+  // D54A outer frame - same size
+  var d54Total=((w*2)+(h*2))*qty/12*rD54A;
+
+  // D50A inner frame - same size
+  var d50Total=((w*2)+(h*2))*qty/12*rD50A;
+
+  // D52 divider - 1 pc W exact
+  var d52Total=w*qty/12*rD52;
+
+  // D61 patti size = W-3"
+  var d61Size=w-3;
+  var d61H, d61Count, glassH=0, glassW=0, glassSqft=0;
+
+  if(doorType==='full'){
+    // Full D61 - count based on full height
+    d61Count=Math.floor(h/3.74);
+    d61H=h;
+  } else {
+    // 2ft D61 + Glass
+    d61Count=Math.floor(24/3.74);
+    d61H=24;
+    glassH=h-24;
+    glassW=w;
+    glassSqft=(glassH/12)*(glassW/12)*qty;
+  }
+
+  var d61Total=d61Size*d61Count*qty/12*rD61;
+
+  var gross=d54Total+d50Total+d52Total+d61Total;
+  var da=gross*disc/100;
+  var net=gross-da;
+
+  var cg=glassSqft*gr;
+  var ca=ac*qty;
+  var sqft=(w/12)*(h/12)*qty;
+  var cl=sqft*lr;
+  var fin=net+cg+ca+cl;
+  var ps=sqft>0?fin/sqft:0;
+
+  // Display
+  document.getElementById('o-sz').textContent=w+'" x '+h+'"';
+  document.getElementById('o-qt').textContent=qty;
+  document.getElementById('o-sf').textContent=sqft.toFixed(2);
+  document.getElementById('o-mm').textContent=mmLabel;
+
+  document.getElementById('p-d54w').textContent=w+'" x2';
+  document.getElementById('p-d54h').textContent=h+'" x2';
+  document.getElementById('p-d50w').textContent=w+'" x2';
+  document.getElementById('p-d50h').textContent=h+'" x2';
+  document.getElementById('p-d52').textContent=w+'"';
+  document.getElementById('p-d61sz').textContent=d61Size+'"';
+  document.getElementById('p-d61ct').textContent=d61Count+' pcs';
+  document.getElementById('p-d61h').textContent=d61H+'"';
+
+  if(doorType==='half'){
+    document.getElementById('glass-res').style.display='block';
+    document.getElementById('p-glsz').textContent=glassW+'" x '+glassH+'"';
+    document.getElementById('p-glsf').textContent=glassSqft.toFixed(2)+' sqft';
+  } else {
+    document.getElementById('glass-res').style.display='none';
+  }
+
+  document.getElementById('r-d54').textContent=rs(d54Total);
+  document.getElementById('r-d50').textContent=rs(d50Total);
+  document.getElementById('r-d52').textContent=rs(d52Total);
+  document.getElementById('r-d61').textContent=rs(d61Total);
+
+  document.getElementById('o-gross').textContent=rs(gross);
+  document.getElementById('o-dp').textContent=disc;
+  document.getElementById('o-da').textContent='-'+rs(da);
+  document.getElementById('o-net').textContent=rs(net);
+  document.getElementById('o-gl').textContent=gr>0?rs(cg):'—';
+  document.getElementById('o-ac').textContent=ac>0?rs(ca):'—';
+  document.getElementById('o-lb').textContent=lr>0?rs(cl):'—';
+  document.getElementById('o-fin').textContent=rs(fin);
+  document.getElementById('o-ps').textContent=sqft>0?rs(ps)+'/sqft':'—';
+
+  document.getElementById('res').style.display='block';
+}
+
+var C=0;
+function chk(){try{if(localStorage.getItem('ok7')==='1')return true;var o=parseInt(localStorage.getItem('u7')||'0')+1;localStorage.setItem('u7',o);if(o<=2)return true;return false;}catch(e){C++;return C<=2;}}
+function showLock(){var o=document.createElement('div');o.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,0.97);display:flex;align-items:center;justify-content:center;';o.innerHTML='<div style="background:#1a1a1a;border:2px solid #c9a84c;border-radius:12px;padding:24px;text-align:center;width:280px;"><p style="color:#c9a84c;font-size:1.1rem;font-weight:bold;margin-bottom:8px">🔒 PROTECTED</p><p style="color:#888;font-size:0.82rem;margin-bottom:12px">Adeel Welding ke liye hai</p><input id="pi" type="password" placeholder="Password daalen..." style="width:100%;padding:10px;border-radius:6px;border:1px solid #555;background:#252525;color:#fff;font-size:1rem;margin-bottom:10px;outline:none;"><br><button onclick="tryP()" style="width:100%;background:#c9a84c;border:none;padding:11px;border-radius:6px;font-size:1rem;cursor:pointer;font-weight:bold">🔑 OPEN</button><p id="pe" style="color:#ff6b6b;font-size:0.8rem;margin-top:8px;display:none">Galat password!</p></div>';document.body.appendChild(o);}
+function tryP(){var p=document.getElementById('pi').value;if(p==='Hassanm8480317'){try{localStorage.setItem('ok7','1');}catch(e){}location.reload();}else{document.getElementById('pe').style.display='block';document.getElementById('pi').value='';}}
+if(!chk())showLock();
+</script>
+</body>
+</html>
