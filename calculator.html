@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adeel Aluminium Material Optimizer - Auto Space X Version</title>
+    <style>
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --sky-500: #0ea5e9;
+            --sky-600: #0284c7;
+            --emerald-500: #10b981;
+            --amber-500: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--slate-950); color: #f8fafc; padding: 20px; min-height: 100vh; }
+        .wrapper { max-width: 1200px; margin: 0 auto; }
+
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border: 2px solid var(--sky-600);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+        header h1 { font-size: 24px; font-weight: 800; background: linear-gradient(to right, #38bdf8, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header h2 { color: var(--emerald-500); font-size: 15px; font-weight: 700; margin-top: 3px; }
+
+        .workspace { display: grid; grid-template-cols: 1fr; gap: 20px; }
+        @media (min-width: 992px) { .workspace { grid-template-cols: 320px 1fr; } }
+
+        .panel { background: var(--slate-900); border: 1px solid var(--border-color); border-radius: 12px; padding: 18px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+        .panel-title { font-size: 16px; font-weight: 700; color: var(--sky-500); margin-bottom: 10px; border-bottom: 1px solid var(--slate-700); padding-bottom: 6px; }
+        .instruction-text { font-size: 12px; color: #94a3b8; margin-bottom: 10px; }
+
+        textarea { width: 100%; height: 150px; background: var(--slate-950); border: 2px solid var(--slate-700); border-radius: 10px; padding: 12px; color: #34d399; font-family: monospace; font-size: 22px; font-weight: bold; resize: none; outline: none; }
+        
+        .btn-calc { width: 100%; background: linear-gradient(135deg, var(--sky-600), #0369a1); color: white; border: none; border-radius: 10px; padding: 12px; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+
+        .dashboard { display: none; flex-direction: column; gap: 20px; }
+
+        /* ULTRA COMPACT SCREENSHOT BOX */
+        .screenshot-table-box {
+            background: #090d16;
+            border: 2px solid var(--emerald-500);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        table.compact-shop-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        table.compact-shop-table th {
+            background-color: #111827;
+            color: #38bdf8;
+            padding: 10px;
+            font-weight: 700;
+            border: 1px solid #1f2937;
+            font-size: 13px;
+            text-align: left;
+        }
+        table.compact-shop-table td {
+            padding: 10px;
+            border: 1px solid #1f2937;
+            color: #f1f5f9;
+            vertical-align: middle;
+        }
+        table.compact-shop-table tr:nth-child(even) {
+            background-color: #0f172a;
+        }
+        
+        .p-section-name { font-weight: 800; color: #ffffff; font-size: 15px; }
+        .p-full-bars { color: #34d399; font-weight: 600; font-size: 14px; line-height: 1.4; }
+        .p-cut-tote { color: #fbbf24; font-weight: 600; font-size: 14px; line-height: 1.4; }
+
+        /* OTHER TABLES */
+        .table-container { overflow-x: auto; margin-top: 5px; }
+        table.regular-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.regular-table th { background: rgba(255,255,255,0.03); color: #94a3b8; padding: 8px; border-bottom: 2px solid var(--slate-700); font-size: 11px; text-align: left;}
+        table.regular-table td { padding: 8px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+
+        .profile-group-title { font-size: 14px; font-weight: bold; color: #f1f5f9; background: rgba(255, 255, 255, 0.02); padding: 6px 10px; border-radius: 6px; margin-top: 15px; border: 1px solid var(--slate-700); display: flex; justify-content: space-between; }
+        .bar-layout-box { background: rgba(15, 23, 42, 0.5); border: 1px solid var(--slate-700); border-radius: 10px; padding: 10px; margin-top: 8px; }
+        .bar-info { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+        
+        .visual-bar-track { height: 22px; background: #334155; border-radius: 4px; display: flex; overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.4); margin-bottom: 4px; }
+        .visual-cut-segment { height: 100%; background: linear-gradient(to bottom, #0284c7, #0369a1); border-right: 1px solid #0f172a; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: white; }
+        .visual-waste-segment { height: 100%; background: linear-gradient(to bottom, #78350f, #451a03); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #f59e0b; }
+        .text-cuts-log { font-size: 11px; color: #cbd5e1; font-family: monospace; background: rgba(0,0,0,0.15); padding: 4px 8px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <header>
+        <h1>Adeel Aluminium Material Optimizer</h1>
+        <h2>Adeel Welding & Aluminium House - Market Order List</h2>
+    </header>
+
+    <div class="workspace">
+        <div class="panel">
+            <div class="panel-title">Size Input Console</div>
+            <p class="instruction-text">Width likh kar Space dabein, 'x' khud lag jaye ga:</p>
+            <textarea id="sizesInput" placeholder="48 (space dabayein) 48&#10;60 60&#10;72 72" onkeydown="handleSpaceToX(event)"></textarea>
+            <button onclick="calculateAbsoluteSmartOptimization()" class="btn-calc">Optimize Material</button>
+        </div>
+
+        <div id="dashboardContainer" class="dashboard">
+
+            <div class="screenshot-table-box">
+                <div style="color: var(--emerald-500); font-weight: 800; font-size: 15px; margin-bottom: 12px; text-align: center; letter-spacing: 0.5px;">📋 MARKET PURCHASING LIST</div>
+                <div class="table-container">
+                    <table class="compact-shop-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 25%;">Profile</th>
+                                <th style="width: 45%;">Full Lengths Required</th>
+                                <th style="width: 30%;">Loose Cut Pieces</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shopOrderListRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">Workshop Cutting Breakdown Pieces List</div>
+                <div class="table-container">
+                    <table class="regular-table">
+                        <thead>
+                            <tr>
+                                <th style="text-align: left;">Profile Section</th>
+                                <th style="text-align: left;">Exact Size Needed (Inches)</th>
+                                <th style="text-align: left;">Quantity Required</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuttingBreakdownRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title" style="color:var(--amber-500)">Workshop Cutting Layout Blueprint</div>
+                <div id="blueprintMapArea"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const STOCK_PROFILES = {
+        'DC26F': [13, 15, 17, 19],
+        'DC30F': [13, 15, 17, 19],
+        'M23': [14, 16, 18, 20],
+        'M28': [14, 16, 18, 20],
+        'M24': [14, 16, 18, 20],
+        'D29': [14, 16, 18, 20]
+    };
+
+    // USTAD ADEEL SMART SPACE-BAR TO 'X' TRICK
+    function handleSpaceToX(event) {
+        const input = event.target;
+        const val = input.value;
+        const selectionStart = input.selectionStart;
+
+        // Agar user spacebar dabaye
+        if (event.key === " " || event.keyCode === 32) {
+            // Check karein ke jis line par hain us mein pehle se 'x' majood to nahi
+            const lines = val.split('\n');
+            const currentLineIndex = val.substr(0, selectionStart).split('\n').length - 1;
+            const currentLineText = lines[currentLineIndex] || "";
+
+            // Agar line mein sirf numbers hain aur koi 'x' nahi hai, aur thora sa text likha hua hai
+            if (currentLineText.length > 0 && !currentLineText.includes('x') && !currentLineText.includes('X')) {
+                event.preventDefault(); // Default space ko rokein
+                
+                // Cursor ki jagah par ' x ' insert kar dein
+                const before = val.substring(0, selectionStart);
+                const after = val.substring(selectionStart);
+                input.value = before + " x " + after;
+                
+                // Cursor ko 'x' ke agay set karein
+                input.selectionStart = input.selectionEnd = selectionStart + 3;
+            }
+        }
+    }
+
+    function calculateAbsoluteSmartOptimization() {
+        const textData = document.getElementById('sizesInput').value.trim();
+        if (!textData) return alert("Ustad ji, size likhein!");
+
+        const lines = textData.split('\n');
+        const demandStore = { 'DC26F': [], 'DC30F': [], 'M23': [], 'M28': [], 'M24': [], 'D29': [] };
+        let validLines = 0;
+
+        lines.forEach(line => {
+            const splitTokens = line.toLowerCase().split('x');
+            if (splitTokens.length !== 2) return;
+            const w = parseFloat(splitTokens[0].trim());
+            const h = parseFloat(splitTokens[1].trim());
+            if (isNaN(w) || isNaN(h) || w <= 0 || h <= 0) return;
+            validLines++;
+
+            demandStore['DC26F'].push(w + 3);
+            demandStore['DC30F'].push(w + 3);
+            demandStore['DC30F'].push(h + 3);
+            demandStore['DC30F'].push(h + 3);
+
+            demandStore['M23'].push(h - 1); demandStore['M23'].push(h - 1);
+            demandStore['M28'].push(h - 1); demandStore['M28'].push(h - 1);
+
+            const m24Size = (w - 6) / 2;
+            for(let k = 0; k < 4; k++) demandStore['M24'].push(m24Size);
+
+            const optA = [h - 1, h - 1, w];
+            const optB = [h - 1, h - 1, (w / 2) + 2, (w / 2) + 2];
+            const bestD29Track = (optA.reduce((p, c) => p + c, 0) <= optB.reduce((p, c) => p + c, 0)) ? optA : optB;
+            bestD29Track.forEach(p => demandStore['D29'].push(p));
+        });
+
+        if (validLines === 0) return alert("Format sahi nahi hai!");
+
+        compileBreakdownTable(demandStore);
+
+        let shopHTML = '';
+        let blueprintHTML = '';
+
+        Object.keys(demandStore).forEach(profile => {
+            if (demandStore[profile].length === 0) return;
+
+            const sortedPieces = [...demandStore[profile]].sort((x, y) => y - x);
+            const standardStocks = STOCK_PROFILES[profile];
+
+            const optimizationResult = executeAbsoluteZeroWasteEngine(sortedPieces, standardStocks);
+
+            // 1. Format Full Lengths
+            const barSummary = {};
+            optimizationResult.fullBars.forEach(bar => {
+                barSummary[bar.lengthFt] = (barSummary[bar.lengthFt] || 0) + 1;
+            });
+
+            let fullBarsTextList = [];
+            Object.keys(barSummary).sort((a,b)=>a-b).forEach(ft => {
+                fullBarsTextList.push(`${ft}ft ke (${barSummary[ft]}) Length`);
+            });
+            let fullBarsCellHTML = fullBarsTextList.length > 0 ? `<div class="p-full-bars">${fullBarsTextList.join(', ')}</div>` : `<span style="color:#64748b;">--</span>`;
+
+            // 2. Format Loose Cut Pieces with Quarter Feet Rounding
+            let looseCutsCellHTML = `<span style="color:#64748b;">--</span>`;
+            if (optimizationResult.marketCuts.length > 0) {
+                const totalCutsInchesSum = optimizationResult.marketCuts.reduce((a, b) => a + b, 0);
+                const exactFeet = totalCutsInchesSum / 12;
+                
+                let roundedFeet = Math.ceil(exactFeet * 4) / 4; 
+                let finalMarketInches = roundedFeet * 12;
+
+                looseCutsCellHTML = `<div class="p-cut-tote">
+                    <strong>Total: ${finalMarketInches.toFixed(1)}" Inch</strong><br>
+                    <span style="font-size:12px; color:#cbd5e1;">(${roundedFeet.toFixed(2)} Feet Cut Piece)</span>
+                </div>`;
+            }
+
+            shopHTML += `<tr>
+                <td><span class="p-section-name">${profile}</span></td>
+                <td>${fullBarsCellHTML}</td>
+                <td>${looseCutsCellHTML}</td>
+            </tr>`;
+
+            // Blueprint Map Generation
+            blueprintHTML += `<div style="margin-bottom: 15px;">
+                <div class="profile-group-title">
+                    <span>⚙️ PROFILE: ${profile}</span>
+                    <span style="color:var(--sky-500)">Lengths: ${optimizationResult.fullBars.length} | Cut Pieces Sum: ${optimizationResult.marketCuts.reduce((a,b)=>a+b,0).toFixed(1)}"</span>
+                </div>`;
+
+            optimizationResult.fullBars.forEach((bar, idx) => {
+                const totalInches = bar.lengthFt * 12;
+                let trackHTML = '';
+                bar.cuts.forEach(c => {
+                    trackHTML += `<div class="visual-cut-segment" style="width: ${(c/totalInches)*100}%">${c.toFixed(1)}"</div>`;
+                });
+                if (bar.waste > 0) {
+                    trackHTML += `<div class="visual-waste-segment" style="width: ${(bar.waste/totalInches)*100}%">${bar.waste.toFixed(1)}"</div>`;
+                }
+
+                blueprintHTML += `<div class="bar-layout-box">
+                    <div class="bar-info">
+                        <span>Length #${idx + 1} (${bar.lengthFt} Ft Full Length)</span>
+                        <span style="color:var(--amber-500)">Scrap: ${bar.waste.toFixed(1)}"</span>
+                    </div>
+                    <div class="visual-bar-track">${trackHTML}</div>
+                    <div class="text-cuts-log">Cuts: [${bar.cuts.map(v => v.toFixed(1) + '"').join(' + ')}]</div>
+                </div>`;
+            });
+
+            if (optimizationResult.marketCuts.length > 0) {
+                blueprintHTML += `<div class="bar-layout-box" style="border-left: 4px solid var(--amber-500); background:rgba(245,158,11,0.02)">
+                    <div class="text-cuts-log" style="color:#fde047">Loose Cut Pieces ➔ [${optimizationResult.marketCuts.map(v => v.toFixed(1) + '"').join(' + ')}] = Total ${optimizationResult.marketCuts.reduce((a,b)=>a+b,0).toFixed(1)}"</div>
+                </div>`;
+            }
+
+            blueprintHTML += `</div>`;
+        });
+
+        document.getElementById('shopOrderListRows').innerHTML = shopHTML;
+        document.getElementById('blueprintMapArea').innerHTML = blueprintHTML;
+        document.getElementById('dashboardContainer').style.display = 'flex';
+    }
+
+    function compileBreakdownTable(demandStore) {
+        let rowsHTML = '';
+        Object.keys(demandStore).forEach(profile => {
+            if (demandStore[profile].length === 0) return;
+            const freq = {};
+            demandStore[profile].forEach(v => { freq[v.toFixed(1)] = (freq[v.toFixed(1)] || 0) + 1; });
+            Object.keys(freq).sort((m, n) => parseFloat(n) - parseFloat(m)).forEach(sz => {
+                rowsHTML += `<tr>
+                    <td style="color:#94a3b8">${profile}</td>
+                    <td style="font-family:monospace; font-weight:bold;">${sz}"</td>
+                    <td style="color:var(--sky-500); font-weight:bold;">${freq[sz]} pcs</td>
+                </tr>`;
+            });
+        });
+        document.getElementById('cuttingBreakdownRows').innerHTML = rowsHTML;
+    }
+
+    function executeAbsoluteZeroWasteEngine(piecesList, stockFeetOptions) {
+        let remainingPieces = [...piecesList];
+        let fullBarsResult = [];
+        let marketCutsResult = [];
+
+        while (remainingPieces.length > 0) {
+            let bestBarOption = null;
+            let bestPieceIndices = [];
+
+            stockFeetOptions.forEach(testFt => {
+                const stockInches = testFt * 12;
+                let currentCuts = [];
+                let currentIndices = [];
+                let currentRemainder = stockInches;
+
+                for (let i = 0; i < remainingPieces.length; i++) {
+                    if (remainingPieces[i] <= currentRemainder) {
+                        currentCuts.push(remainingPieces[i]);
+                        currentRemainder -= remainingPieces[i];
+                        currentIndices.push(i);
+                    }
+                }
+
+                if (currentCuts.length > 0) {
+                    if (bestBarOption === null || currentRemainder < bestBarOption.waste) {
+                        bestBarOption = { lengthFt: testFt, waste: currentRemainder, cuts: currentCuts };
+                        bestPieceIndices = currentIndices;
+                    }
+                }
+            });
+
+            if (bestBarOption) {
+                const totalInches = bestBarOption.lengthFt * 12;
+                if ((bestBarOption.waste / totalInches) > 0.30) {
+                    bestBarOption.cuts.forEach(cutPiece => {
+                        marketCutsResult.push(cutPiece);
+                    });
+                    bestPieceIndices.sort((a, b) => b - a).forEach(idx => {
+                        remainingPieces.splice(idx, 1);
+                    });
+                } else {
+                    fullBarsResult.push(bestBarOption);
+                    bestPieceIndices.sort((a, b) => b - a).forEach(idx => {
+                        remainingPieces.splice(idx, 1);
+                    });
+                }
+            } else {
+                marketCutsResult.push(remainingPieces[0]);
+                remainingPieces.splice(0, 1);
+            }
+        }
+
+        return { fullBars: fullBarsResult, marketCuts: marketCutsResult };
+    }
+</script>
+
+</body>
+</html>
