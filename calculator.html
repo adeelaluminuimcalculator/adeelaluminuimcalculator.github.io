@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adeel Aluminium Material Optimizer - Pro Version</title>
+    <style>
+        /* FULL CUSTOM INDUSTRIAL DARK THEME STYLING */
+        :root {
+            --slate-950: #020617;
+            --slate-900: #0f172a;
+            --slate-800: #1e293b;
+            --slate-700: #334155;
+            --sky-500: #0ea5e9;
+            --sky-600: #0284c7;
+            --emerald-500: #10b981;
+            --emerald-600: #059669;
+            --amber-500: #f59e0b;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--slate-950);
+            color: #f8fafc;
+            padding: 25px;
+            min-height: 100vh;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* BRANDING HEADER */
+        header {
+            background: linear-gradient(135deg, #1e1b4b, #0f172a);
+            border: 2px solid var(--sky-600);
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        header h1 {
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(to right, #38bdf8, #34d399);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        header h2 {
+            color: var(--emerald-500);
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(2, 132, 199, 0.1);
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: 1px solid rgba(2, 132, 199, 0.3);
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        .contact-info a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        /* INTERFACE GRID */
+        .workspace {
+            display: grid;
+            grid-template-cols: 1xl;
+            gap: 25px;
+        }
+
+        @media (min-width: 992px) {
+            .workspace {
+                grid-template-cols: 350px 1fr;
+            }
+        }
+
+        /* PANELS AND CARDS */
+        .panel {
+            background: var(--slate-900);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--sky-500);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--slate-700);
+            padding-bottom: 10px;
+        }
+
+        .instruction-text {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        textarea {
+            width: 100%;
+            height: 250px;
+            background: var(--slate-950);
+            border: 2px solid var(--slate-700);
+            border-radius: 12px;
+            padding: 15px;
+            color: #34d399;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            font-weight: bold;
+            resize: none;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        textarea:focus {
+            border-color: var(--sky-500);
+            box-shadow: 0 0 10px rgba(14, 165, 233, 0.2);
+        }
+
+        /* ACTION BUTTON */
+        .btn-calc {
+            width: 100%;
+            background: linear-gradient(135deg, var(--sky-600), #0369a1);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.4);
+        }
+
+        .btn-calc:hover {
+            background: linear-gradient(135deg, var(--sky-500), var(--sky-600));
+            transform: translateY(-1px);
+        }
+
+        .btn-calc:active {
+            transform: translateY(0);
+        }
+
+        /* DASHBOARD METRICS */
+        .dashboard {
+            display: none;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-cols: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .metric-card {
+            background: var(--slate-900);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .metric-card.blue { border-left: 5px solid var(--sky-500); }
+        .metric-card.green { border-left: 5px solid var(--emerald-500); }
+        .metric-card.amber { border-left: 5px solid var(--amber-500); }
+
+        .metric-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .metric-val {
+            font-size: 28px;
+            font-weight: 900;
+            margin-top: 5px;
+        }
+
+        .text-blue { color: var(--sky-500); }
+        .text-green { color: var(--emerald-500); }
+        .text-amber { color: var(--amber-500); }
+
+        /* TABLES STYLING */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            padding: 12px 15px;
+            font-weight: 600;
+            border-bottom: 2px solid var(--slate-700);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 14px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e2e8f0;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .badge-qty {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--emerald-500);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* GRAPHICAL CUTTING ENGINE PLAN LAYOUT */
+        .profile-group-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f1f5f9;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 1px solid var(--slate-700);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .bar-layout-box {
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--slate-700);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 12px;
+        }
+
+        .bar-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .visual-bar-track {
+            height: 30px;
+            background: #334155;
+            border-radius: 6px;
+            display: flex;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.5);
+            margin-bottom: 8px;
+        }
+
+        .visual-cut-segment {
+            height: 100%;
+            background: linear-gradient(to bottom, #0284c7, #0369a1);
+            border-right: 2px solid #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+        }
+
+        .visual-waste-segment {
+            height: 100%;
+            background: linear-gradient(to bottom, #78350f, #451a03);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+
+        .text-cuts-log {
+            font-size: 13px;
+            color: #cbd5e1;
+            font-family: monospace;
+            background: rgba(0,0,0,0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <header>
+        <h1>Adeel Aluminium Material Optimizer</h1>
+        <h2>Adeel Welding & Aluminium House</h2>
+        <div class="contact-info">
+            <span>Call/WhatsApp:</span>
+            <a href="https://wa.me/923217378024" target="_blank">03217378024</a>
+        </div>
+    </header>
+
+    <div class="workspace">
+        <div class="panel">
+            <div class="panel-title">Size Input Console</div>
+            <p class="instruction-text">Yahan apne tamam windows ke sizes enter karein. Har line par aik size hona chahiye (Chowrai x Unchai):</p>
+            <textarea id="sizesInput" placeholder="60x48&#10;60x60&#10;72x60&#10;60x72"></textarea>
+            <button onclick="calculateWorkshopOptimization()" class="btn-calc">Optimize Material</button>
+        </div>
+
+        <div id="dashboardContainer" class="dashboard">
+            <div class="metrics-grid">
+                <div class="metric-card blue">
+                    <p class="metric-label">Total Pipe Lengths</p>
+                    <p id="totalBarsVal" class="metric-val text-blue">0</p>
+                </div>
+                <div class="metric-card green">
+                    <p class="metric-label">Total Cut Pieces</p>
+                    <p id="totalPiecesVal" class="metric-val text-green">0</p>
+                </div>
+                <div class="metric-card amber">
+                    <p class="metric-label">Total Waste/Scrap</p>
+                    <p id="totalWasteVal" class="metric-val text-amber">0"</p>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title" style="color:var(--emerald-500)">1. Shop Order List (Market Purchasing Summary)</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Section Profile</th>
+                                <th>Best Standard Length</th>
+                                <th>Required Quantity</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shopOrderListRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title">2. Required Cutting Breakdown Pieces List</div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Profile Section</th>
+                                <th>Exact Size Needed (Inches)</th>
+                                <th>Total Quantity Required</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cuttingBreakdownRows"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-title" style="color:var(--amber-500)">3. Workshop Cutting Layout Blueprint</div>
+                <div id="blueprintMapArea"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // HARDCODED TECHNICAL CONFIGURATIONS REGISTER FOR REGIONAL STOCKS
+    const STOCK_MANAGEMENT_LENGTHS = {
+        'DC26F': [15, 17, 19],
+        'DC30F': [15, 17, 19],
+        'M23': [14, 16, 18, 20],
+        'M28': [14, 16, 18, 20],
+        'M24': [14, 16, 18, 20],
+        'D29': [14, 16, 18, 20]
+    };
+
+    function calculateWorkshopOptimization() {
+        const textData = document.getElementById('sizesInput').value.trim();
+        if (!textData) {
+            alert("Ustad ji, empty text area mein data run nahi ho sakta!");
+            return;
+        }
+
+        const lines = textData.split('\n');
+        const demandStore = { 'DC26F': [], 'DC30F': [], 'M23': [], 'M28': [], 'M24': [], 'D29': [] };
+        let parsedLinesCounter = 0;
+
+        lines.forEach(line => {
+            const splitTokens = line.toLowerCase().split('x');
+            if (splitTokens.length !== 2) return;
+
+            const widthVal = parseFloat(splitTokens[0].trim());
+            const heightVal = parseFloat(splitTokens[1].trim());
+
+            if (isNaN(widthVal) || isNaN(heightVal) || widthVal <= 0 || heightVal <= 0) return;
+            parsedLinesCounter++;
+
+            // TECHNICAL ASSIGNMENTS BY ASSIGNED COMPONENT STANDARDS
+            demandStore['DC26F'].push(widthVal + 3);
+
+            demandStore['DC30F'].push(widthVal + 3);
+            demandStore['DC30F'].push(heightVal + 3);
+            demandStore['DC30F'].push(heightVal + 3);
+
+            // M23 Standard Auto Adjust Mechanics Calculation
+            demandStore['M23'].push(heightVal - 1);
+            demandStore['M23'].push(heightVal - 1);
+
+            // M28 Standard Auto Adjust Mechanics Calculation
+            demandStore['M28'].push(heightVal - 1);
+            demandStore['M28'].push(heightVal - 1);
+
+            // M24 Structural Partition Standard
+            const singleM24Size = (widthVal - 6) / 2;
+            for(let k = 0; k < 4; k++) {
+                demandStore['M24'].push(singleM24Size);
+            }
+
+            // D29 Multi-Option Permutation Minimization Evaluation Strategy Selector
+            const optionASumSet = [heightVal - 1, heightVal - 1, widthVal];
+            const optionBSumSet = [heightVal - 1, heightVal - 1, (widthVal / 2) + 2, (widthVal / 2) + 2];
+
+            const scoreA = optionASumSet.reduce((p, c) => p + c, 0);
+            const scoreB = optionBSumSet.reduce((p, c) => p + c, 0);
+
+            const bestD29Track = (scoreA <= scoreB) ? optionASumSet : optionBSumSet;
+            bestD29Track.forEach(elementPiece => demandStore['D29'].push(elementPiece));
+        });
+
+        if (parsedLinesCounter === 0) {
+            alert("Format theek nahi hai, data ko 'Width x Height' ki surah mein likhein (Jaise: 60x48)!");
+            return;
+        }
+
+        // EXECUTE INTERFACE COMPILATION VIEWS
+        compileBreakdownTable(demandStore);
+
+        let systemWideTotalBars = 0;
+        let systemWideTotalPieces = 0;
+        let systemWideTotalWasteInches = 0;
+
+        let finalPurchasingRowsHTML = '';
+        let blueprintMapCardsHTML = '';
+
+        Object.keys(demandStore).forEach(sectionKey => {
+            if (demandStore[sectionKey].length === 0) return;
+
+            const structuredSortedPieces = [...demandStore[sectionKey]].sort((x, y) => y - x);
+            systemWideTotalPieces += structuredSortedPieces.length;
+
+            const stockParametersList = STOCK_MANAGEMENT_LENGTHS[sectionKey];
+            const optimizedResultLayout = execute1DHeuristicEngine(structuredSortedPieces, stockParametersList);
+
+            // MAP OUT QUANTIFIED SUMMARY FOR SHOP PROCUREMENT MATRIX
+            const aggregatedPurchases = {};
+            optimizedResultLayout.allocatedBars.forEach(individualBar => {
+                aggregatedPurchases[individualBar.configuredLengthFt] = (aggregatedPurchases[individualBar.configuredLengthFt] || 0) + 1;
+                systemWideTotalBars++;
+                systemWideTotalWasteInches += individualBar.remainingWasteInches;
+            });
+
+            Object.keys(aggregatedPurchases).forEach(ftIndex => {
+                finalPurchasingRowsHTML += `<tr>
+                    <td style="font-weight:bold; color:#cbd5e1;">${sectionKey}</td>
+                    <td>${ftIndex} Feet Length</td>
+                    <td><span class="badge-qty">${aggregatedPurchases[ftIndex]} Bars</span></td>
+                </tr>`;
+            });
+
+            // MAP GRAPHICAL SCHEMATICS COMPONENT TRACK LAYOUTS
+            blueprintMapCardsHTML += `<div style="margin-bottom: 25px;">
+                <div class="profile-group-title">
+                    <span>⚙️ SECTION RUNWAY: ${sectionKey}</span>
+                    <span style="color:var(--sky-500)">Total: ${optimizedResultLayout.allocatedBars.length} Bars Allocated</span>
+                </div>`;
+
+            optimizedResultLayout.allocatedBars.forEach((barObj, trackingIdx) => {
+                const limitScaleInches = barObj.configuredLengthFt * 12;
+                
+                let tracksVisualSegHTML = '';
+                barObj.cutCutsList.forEach(cutInch => {
+                    const pctWidth = (cutInch / limitScaleInches) * 100;
+                    tracksVisualSegHTML += `<div class="visual-cut-segment" style="width: ${pctWidth}%">${cutInch.toFixed(1)}"</div>`;
+                });
+
+                if(barObj.remainingWasteInches > 0) {
+                    const wastePct = (barObj.remainingWasteInches / limitScaleInches) * 100;
+                    tracksVisualSegHTML += `<div class="visual-waste-segment" style="width: ${wastePct}%">${barObj.remainingWasteInches.toFixed(1)}"</div>`;
+                }
+
+                blueprintMapCardsHTML += `<div class="bar-layout-box">
+                    <div class="bar-info">
+                        <span>Bar #${trackingIdx + 1} (${barObj.configuredLengthFt} Feet Raw Pipe)</span>
+                        <span style="color:var(--amber-500)">Waste: ${barObj.remainingWasteInches.toFixed(1)}"</span>
+                    </div>
+                    <div class="visual-bar-track">${tracksVisualSegHTML}</div>
+                    <div class="text-cuts-log">Cutting Action Required ➔ [${barObj.cutCutsList.map(v => v.toFixed(1) + '"').join(' + ')}]</div>
+                </div>`;
+            });
+
+            blueprintMapCardsHTML += `</div>`;
+        });
+
+        // RECONCILE DATA COUNTERS ON DASHBOARD BADGES UI
+        document.getElementById('totalBarsVal').innerText = systemWideTotalBars;
+        document.getElementById('totalPiecesVal').innerText = systemWideTotalPieces;
+        document.getElementById('totalWasteVal').innerText = `${systemWideTotalWasteInches.toFixed(1)}" (~${(systemWideTotalWasteInches / 12).toFixed(1)} Ft)`;
+
+        document.getElementById('shopOrderListRows').innerHTML = finalPurchasingRowsHTML;
+        document.getElementById('blueprintMapArea').innerHTML = blueprintMapCardsHTML;
+
+        document.getElementById('dashboardContainer').style.display = 'flex';
+    }
+
+    function compileBreakdownTable(demandStore) {
+        let rowsHTML = '';
+        Object.keys(demandStore).forEach(profileCode => {
+            if (demandStore[profileCode].length === 0) return;
+
+            const frequencyMap = {};
+            demandStore[profileCode].forEach(inchVal => {
+                const fixedString = inchVal.toFixed(2);
+                frequencyMap[fixedString] = (frequencyMap[fixedString] || 0) + 1;
+            });
+
+            Object.keys(frequencyMap).sort((m, n) => parseFloat(n) - parseFloat(m)).forEach(sizeKey => {
+                rowsHTML += `<tr>
+                    <td style="color:#94a3b8">${profileCode}</td>
+                    <td style="font-family:monospace; font-weight:bold;">${sizeKey}"</td>
+                    <td style="text-align:right; font-weight:bold; color:var(--sky-500);">${frequencyMap[sizeKey]} pcs</td>
+                </tr>`;
+            });
+        });
+        document.getElementById('cuttingBreakdownRows').innerHTML = rowsHTML;
+    }
+
+    // ADVANCED RECURSIVE HEURISTIC BIN PACKING SIMULATOR FOR PROFILE TRACKING OVER VARIANT COMBINATIONAL STOCKS
+    function execute1DHeuristicEngine(sortedDemandsList, usableStockOptionsFeet) {
+        let ultimateGlobalConfiguration = null;
+        let scaleAbsoluteMinimumWaste = Infinity;
+
+        usableStockOptionsFeet.forEach(testLengthFeet => {
+            const parsedBoundInches = testLengthFeet * 12;
+            let currentTrialRunBars = [];
+
+            sortedDemandsList.forEach(requiredPieceInch => {
+                if (requiredPieceInch > parsedBoundInches) return;
+
+                let pieceAllocatedFlag = false;
+                for (let pivotIndex = 0; pivotIndex < currentTrialRunBars.length; pivotIndex++) {
+                    if (currentTrialRunBars[pivotIndex].remainingWasteInches >= requiredPieceInch) {
+                        currentTrialRunBars[pivotIndex].cutCutsList.push(requiredPieceInch);
+                        currentTrialRunBars[pivotIndex].remainingWasteInches -= requiredPieceInch;
+                        pieceAllocatedFlag = true;
+                        break;
+                    }
+                }
+
+                if (!pieceAllocatedFlag) {
+                    currentTrialRunBars.push({
+                        configuredLengthFt: testLengthFeet,
+                        remainingWasteInches: parsedBoundInches - requiredPieceInch,
+                        cutCutsList: [requiredPieceInch]
+                    });
+                }
+            });
+
+            const overallIterationWasteSum = currentTrialRunBars.reduce((sum, item) => sum + item.remainingWasteInches, 0);
+
+            if (overallIterationWasteSum < scaleAbsoluteMinimumWaste) {
+                scaleAbsoluteMinimumWaste = overallIterationWasteSum;
+                ultimateGlobalConfiguration = currentTrialRunBars;
+            }
+        });
+
+        return {
+            allocatedBars: ultimateGlobalConfiguration,
+            aggregatedWasteIndex: scaleAbsoluteMinimumWaste
+        };
+    }
+</script>
+
+</body>
+</html>
