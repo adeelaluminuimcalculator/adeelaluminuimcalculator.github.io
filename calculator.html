@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Adeel Aluminium Calculator</title>
+
+<style>
+body{
+font-family:Arial;
+max-width:1000px;
+margin:auto;
+padding:20px;
+}
+
+textarea{
+width:100%;
+height:180px;
+}
+
+button{
+padding:12px 20px;
+font-size:18px;
+}
+
+pre{
+background:#f4f4f4;
+padding:10px;
+white-space:pre-wrap;
+}
+</style>
+</head>
+<body>
+
+<h2>Adeel Welding & Aluminium House</h2>
+<p>03217378024</p>
+
+<h3>Frame Sizes</h3>
+
+<textarea id="sizes" placeholder="72x72
+72x60
+60x48"></textarea>
+
+<br><br>
+
+<button onclick="calculate()">
+Calculate
+</button>
+
+<h3>Result</h3>
+
+<pre id="result"></pre>
+
+<script>
+
+function calculate(){
+
+let input =
+document.getElementById("sizes").value.trim();
+
+if(input===""){
+alert("Size dalo");
+return;
+}
+
+let lines=input.split("\n");
+
+let output="";
+
+for(let i=0;i<lines.length;i++){
+
+let line=lines[i].trim();
+
+let match=
+line.match(/([\d.]+)\s*x\s*([\d.]+)/i);
+
+if(!match) continue;
+
+let width=parseFloat(match[1]);
+let height=parseFloat(match[2]);
+
+let dc26=width+3;
+
+let dc30Top=width+3;
+let dc30Side=height+3;
+
+let m23=height;
+let m28=height;
+
+let m24=(width-6)/2;
+
+output +=
+"FRAME "+(i+1)+"\n";
+
+output +=
+"SIZE = "+width+" x "+height+"\n\n";
+
+output +=
+"DC26F\n";
+output += dc26.toFixed(1)+"\n\n";
+
+output +=
+"DC30F\n";
+output += dc30Top.toFixed(1)+"\n";
+output += dc30Side.toFixed(1)+"\n";
+output += dc30Side.toFixed(1)+"\n\n";
+
+output +=
+"M23\n";
+output += m23.toFixed(1)+"\n";
+output += m23.toFixed(1)+"\n\n";
+
+output +=
+"M28\n";
+output += m28.toFixed(1)+"\n";
+output += m28.toFixed(1)+"\n\n";
+
+output +=
+"M24\n";
+output += m24.toFixed(1)+"\n";
+output += m24.toFixed(1)+"\n";
+output += m24.toFixed(1)+"\n";
+output += m24.toFixed(1)+"\n\n";
+
+output +=
+"---------------------------\n\n";
+
+}
+
+document.getElementById("result").textContent=
+output;
+
+}
+
+</script>
+
+</body>
+</html>
