@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Material Optimizer</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0f0f0f;color:#e0e0e0;font-family:sans-serif;padding:12px}
+.shop{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:12px;margin-bottom:12px}
+.shop h2{color:#c9a84c;font-size:1.1rem;font-weight:900}
+.shop p{color:#888;font-size:0.82rem;margin-top:2px}
+.title-box{text-align:center;background:#1a1a1a;border:2px solid #c9a84c;border-radius:10px;padding:10px;margin-bottom:12px}
+.title-box span{color:#c9a84c;font-size:1.2rem;font-weight:bold}
+.card{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:14px;margin-bottom:10px}
+.card h3{color:#c9a84c;font-size:1rem;font-weight:bold;margin-bottom:10px;text-transform:uppercase}
+.row{display:flex;gap:10px;margin-bottom:10px}
+.grp{flex:1}
+label{display:block;font-size:0.72rem;color:#888;margin-bottom:4px;text-transform:uppercase}
+input,select{width:100%;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#e0e0e0;font-size:1rem;outline:none}
+textarea{width:100%;height:130px;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#7dff7d;font-size:1.1rem;font-weight:bold;font-family:monospace;resize:none;outline:none}
+.btn{width:100%;background:#c9a84c;color:#0f0f0f;border:none;padding:13px;border-radius:8px;font-size:1.1rem;font-weight:bold;cursor:pointer;margin-top:6px}
+.btn-bill{width:100%;background:#1a3a1a;color:#7dff7d;border:1px solid #7dff7d;padding:12px;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:8px;display:none}
+.btn-shop{width:100%;background:#1a2a3a;color:#7db8ff;border:1px solid #7db8ff;padding:12px;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:8px;display:none}
+.res{display:none;margin-top:10px}
+.plan-sec{margin-bottom:10px}
+.plan-name{background:#1e1a0f;border:1px solid #c9a84c;border-radius:6px;padding:6px 10px;color:#c9a84c;font-weight:bold;font-size:0.85rem;margin-bottom:5px;display:flex;justify-content:space-between}
+.rod-box{background:#252525;border:1px solid #333;border-radius:6px;padding:8px;margin-bottom:4px}
+.rod-hd{display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px}
+.rod-ft{color:#7dff7d;font-weight:bold}
+.rod-waste{color:#f59e0b}
+.rod-track{height:20px;background:#333;border-radius:3px;display:flex;overflow:hidden;margin:4px 0}
+.cut-seg{height:100%;background:#0284c7;border-right:1px solid #0f0f0f;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:bold;color:white;min-width:2px}
+.waste-seg{height:100%;background:#78350f;display:flex;align-items:center;justify-content:center;font-size:9px;color:#f59e0b}
+.rod-cuts{color:#888;font-size:0.75rem;font-family:monospace}
+.mkt-box{background:#1a1a0a;border:1px solid #f59e0b;border-radius:6px;padding:8px;margin-bottom:4px}
+.mkt-hd{color:#f59e0b;font-weight:bold;font-size:0.8rem;margin-bottom:3px}
+.mkt-cuts{color:#fde047;font-family:monospace;font-size:0.75rem}
+.tr{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-radius:8px;margin-top:5px;font-size:1rem;font-weight:bold}
+.footer{text-align:center;background:#1a1a1a;border:1px solid #c9a84c;border-radius:10px;padding:10px;margin-top:10px}
+.footer h3{color:#c9a84c;font-size:1rem}
+.footer p{color:#888;font-size:0.82rem;margin-top:2px}
+.hint{background:#252525;border-radius:6px;padding:7px 10px;margin-bottom:8px;font-size:0.78rem;color:#888}
+.overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#0a0a0a;z-index:9999;overflow-y:auto;padding:16px}
+.ov-inner{max-width:600px;margin:0 auto}
+.close-btn{background:#5a1a1a;color:#ff6b6b;border:none;border-radius:6px;padding:8px 16px;font-weight:bold;cursor:pointer;margin-bottom:14px;width:100%}
+.bd{background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px;margin-bottom:10px}
+.bd-title{color:#c9a84c;font-size:0.85rem;font-weight:bold;margin-bottom:8px;border-bottom:1px solid #333;padding-bottom:5px;text-transform:uppercase}
+.br{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #222;font-size:0.82rem}
+.bn{color:#888}
+.bv{color:#e0e0e0;font-weight:bold}
+.shop-card{background:#0a0a0a;border:2px solid #c9a84c;border-radius:14px;padding:16px;min-height:80vh}
+.shop-header{text-align:center;border-bottom:2px dashed #c9a84c;padding-bottom:12px;margin-bottom:8px}
+.shop-row{display:flex;align-items:center;border-bottom:1px solid #222;padding:10px 0;gap:8px}
+.shop-sec{color:#c9a84c;font-weight:900;flex:0 0 22%}
+.shop-fracs{flex:1;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.frac{text-align:center}
+.frac-line{display:block;width:36px;height:2px;background:#7dff7d;margin:2px auto}
+.edit-hint{text-align:center;color:#555;font-size:0.7rem;margin-top:10px}
+.qadd{display:flex;gap:6px;margin-top:6px}
+.qbtn{background:#252525;border:1px solid #444;color:#c9a84c;border-radius:6px;padding:6px 14px;font-size:0.9rem;cursor:pointer;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="shop">
+  <h2>ADEEL WELDING & ALUMINIUM HOUSE</h2>
+  <p>Lasuri | 0321-7378024</p>
+</div>
+<div class="title-box"><span>MATERIAL OPTIMIZER</span></div>
+<div id="subInfo" style="display:none;background:#1a2a1a;border:1px solid #2a4a2a;border-radius:8px;padding:8px 12px;margin-bottom:10px">
+  <span style="color:#7dff7d;font-size:0.8rem;font-weight:bold" id="subDays">30 din bache</span>
+  <span style="color:#888;font-size:0.75rem">|</span>
+  <span style="color:#f59e0b;font-size:0.8rem;font-weight:bold" id="subUses">100 uses bache</span>
+</div>
+<div class="card">
+  <h3>Settings</h3>
+  <div class="row">
+    <div class="grp"><label>Gauge</label>
+      <select id="gauge">
+        <option value="1.2">1.2mm</option>
+        <option value="1.6">1.6mm</option>
+        <option value="2.0">2.0mm</option>
+      </select>
+    </div>
+    <div class="grp"><label>Discount %</label><input id="disc" type="number" value="0"></div>
+  </div>
+  <div class="row" style="margin-bottom:10px">
+    <div class="grp"><label>Customer Name (optional)</label><input id="custName" type="text" placeholder="Naam likhein..."></div>
+  </div>
+  <div class="hint">Format: 48x48 ya 48x48x2 (qty ke liye)</div>
+  <label>Frame Sizes</label>
+  <textarea id="sizes" placeholder="48x48&#10;60x72x2"></textarea>
+  <div class="qadd"><button class="qbtn" id="addXBtn">+ x</button></div>
+  <button class="btn" id="optBtn">OPTIMIZE KAREIN</button>
+</div>
+<button class="btn" id="saveBtn" style="display:none;background:#1a3a2a;color:#7dff7d;border:1px solid #7dff7d;margin-top:8px">SAVE KAREIN</button>
+<button class="btn" id="histBtn" style="background:#1a1a3a;color:#aaa;border:1px solid #444;margin-top:8px">HISTORY DEKHEIN</button>
+
+<div class="res" id="res">
+  <button class="btn-shop" id="shop-btn">SHOP LIST DEKHEIN</button>
+  <button style="width:100%;background:#1a1a3a;color:#d4a0ff;border:1px solid #d4a0ff;padding:12px;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:8px;display:none" id="pair-btn">✂️ PAIRING GUIDE DEKHEIN</button>
+  <button style="width:100%;background:#1a2a1a;color:#7dff7d;border:1px solid #7dff7d;padding:12px;border-radius:8px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:8px;display:none" id="cut-table-btn">📋 CUTTING TABLE DEKHEIN</button>
+  <div class="card">
+    <h3>Cutting Plan</h3>
+    <div id="cutting-plan"></div>
+  </div>
+  <button class="btn-bill" id="bill-btn">AMOUNT BILL DEKHEIN</button>
+  <div class="footer">
+    <h3>ADEEL WELDING & ALUMINIUM HOUSE</h3>
+    <p>Lasuri | 0321-7378024</p>
+  </div>
+</div>
+
+<div class="overlay" id="shop-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="shopCloseBtn">BACK</button>
+    <div class="shop-card" id="shop-card"></div>
+    <div class="edit-hint">Numbers tap kar ke edit kar sakte hain</div>
+  </div>
+</div>
+<div class="overlay" id="bill-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="billCloseBtn">BACK</button>
+    <h2 style="color:#c9a84c;margin-bottom:12px">BILL AMOUNT</h2>
+    <div class="card" style="margin-bottom:12px">
+      <div class="row">
+        <div class="grp"><label>Gauge</label>
+          <select id="bill-gauge">
+            <option value="1.2">1.2mm</option>
+            <option value="1.6">1.6mm</option>
+            <option value="2.0">2.0mm</option>
+          </select>
+        </div>
+        <div class="grp"><label>Discount %</label><input id="bill-disc" type="number" value="0"></div>
+      </div>
+      <div class="row">
+        <div class="grp"><label>Glass Rate (per sqft)</label><input id="glassRate" type="number" value="0"></div>
+        <div class="grp"><label>Glass Thickness</label>
+          <select id="glassMm">
+            <option value="5">5mm</option>
+            <option value="6">6mm</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="grp"><label>Aluminium Colour / رنگ</label>
+          <select id="aluColour">
+            <option value="White / سفید">White / سفید</option>
+            <option value="Brown / براؤن">Brown / براؤن</option>
+            <option value="Champagne / شیمپین">Champagne / شیمپین</option>
+            <option value="Black / کالا">Black / کالا</option>
+            <option value="Silver / سلور">Silver / سلور</option>
+            <option value="custom">Custom...</option>
+          </select>
+        </div>
+        <div class="grp"><label>Glass Colour / رنگ</label>
+          <select id="glassColour">
+            <option value="Clear / شفاف">Clear / شفاف</option>
+            <option value="Green / سبز">Green / سبز</option>
+            <option value="Blue / نیلا">Blue / نیلا</option>
+            <option value="Brown / براؤن">Brown / براؤن</option>
+            <option value="Bronze / کانسی">Bronze / کانسی</option>
+            <option value="custom">Custom...</option>
+          </select>
+        </div>
+      </div>
+      <div class="row" id="customColourRow" style="display:none">
+        <div class="grp"><label>Custom Alu Colour</label><input id="aluColourCustom" type="text" placeholder="Colour likhein..."></div>
+        <div class="grp"><label>Custom Glass Colour</label><input id="glassColourCustom" type="text" placeholder="Colour likhein..."></div>
+      </div>
+      <div class="row">
+        <div class="grp"><label>Accessories (Rs)</label><input id="accAmt" type="number" value="0"></div>
+        <div class="grp"><label>Labour (Rs)</label><input id="labourAmt" type="number" value="0"></div>
+      </div>
+
+      <button class="btn" id="calcBillBtn">CALCULATE</button>
+    </div>
+    <div id="bill-content"></div>
+    <button id="cust-bill-btn" onclick="buildCustomerBill()" style="width:100%;background:#1a1a3a;color:#d4a0ff;border:2px solid #d4a0ff;border-radius:8px;padding:13px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:12px">🧾 CUSTOMER BILL DEKHEIN</button>
+  </div>
+</div>
+<div class="overlay" id="hist-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="histCloseBtn">BACK</button>
+    <h2 style="color:#c9a84c;margin-bottom:12px">HISTORY</h2>
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <input id="searchInput" type="text" placeholder="Naam se search..." style="flex:1;background:#252525;border:1px solid #333;border-radius:6px;padding:9px 10px;color:#e0e0e0;font-size:1rem;outline:none">
+      <button id="searchBtn" style="background:#c9a84c;color:#000;border:none;border-radius:6px;padding:9px 14px;font-weight:bold;cursor:pointer">Search</button>
+    </div>
+    <div id="hist-list"></div>
+  </div>
+</div>
+<div class="overlay" id="pair-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="pairCloseBtn">BACK</button>
+    <h2 style="color:#d4a0ff;margin-bottom:12px">✂️ PAIRING GUIDE</h2>
+    <p style="color:#888;font-size:0.8rem;margin-bottom:12px">2 rods baandh ke 1 cut mein zyada pcs nikalo</p>
+    <div id="pair-content"></div>
+  </div>
+</div>
+<div class="overlay" id="cut-table-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="cutTableCloseBtn">BACK</button>
+    <h2 style="color:#7dff7d;margin-bottom:4px">📋 CUTTING TABLE</h2>
+    <p style="color:#888;font-size:0.75rem;margin-bottom:8px">Three Track — M23/M28/M24/D29 cutting sizes</p>
+    <button id="glassTableBtn" style="background:#1a2a3a;color:#60a5fa;border:1px solid #60a5fa;border-radius:6px;padding:8px 14px;font-weight:bold;cursor:pointer;margin-bottom:12px;font-size:0.85rem">🪟 GLASS SIZE DEKHEIN</button>
+    <div id="cut-table-content" style="overflow-x:auto"></div>
+  </div>
+</div>
+<div class="overlay" id="glass-table-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="glassTableCloseBtn">BACK</button>
+    <h2 style="color:#60a5fa;margin-bottom:4px">🪟 GLASS SIZE TABLE</h2>
+    <p style="color:#888;font-size:0.75rem;margin-bottom:12px">Three Track — Glass H & Glass W</p>
+    <div id="glass-table-content" style="overflow-x:auto"></div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var invoiceData={};
+var shopData={};
+var DC_STOCKS=[13,15,17,19];
+var M_STOCKS=[14,16,18];
+var DC_MIN_IN=156;
+var M_MIN_IN=168;
+var framesList=[];
+var sectionRods={};
+
+function parseSot(val){
+  // 1 inch = 8 soot. Input: 48.2 = 48 inches 2 soot = 48 + 2/8 = 48.25"
+  var s=String(val),parts=s.split('.');
+  var whole=parseInt(parts[0],10)||0;
+  if(parts.length<2)return whole;
+  var soot=parseInt(parts[1],10)||0;
+  // soot is 1-7 (out of 8)
+  return whole+(soot/8);
+}
+
+function toSotStr(val){
+  // Convert inches to soot display: 48.25 -> "48.2", 48.5 -> "48.4", 48.75 -> "48.6"
+  var whole=Math.floor(val);
+  var frac=val-whole;
+  var soot=Math.round(frac*8);
+  if(soot===0)return whole+'';
+  if(soot===8)return (whole+1)+'';
+  return whole+'.'+soot;
+}
+
+function roundup6(inches){
+  // round up to next 6" (0.5ft) multiple
+  return Math.ceil(inches/6)*0.5;
+}
+
+/*
+  NEW ALGORITHM — Exhaustive Best Fit
+  
+  Rules:
+  1. Try ALL possible combinations of stock sizes
+  2. For each rod: greedily fill with pieces (largest first)
+  3. Waste must be <= 6" to use as full rod
+  4. Prefer: fewer total rods > smaller stock sizes > no market cut
+  5. 20ft is LAST resort — only use if 14/16/18 don't fit with <=6" waste
+  6. Remaining pieces that can't fit anywhere = market cut (round up to next 6")
+*/
+
+function optimizePieces(pieceList, stockFtList, minIn){
+  var MAX_WASTE=6;
+  var stks=stockFtList.slice().sort(function(a,b){return a-b;});
+
+  function bestFill(pieces, stockIn){
+    var n=pieces.length, best=null, bestWaste=MAX_WASTE+1;
+    if(n<=18){
+      for(var mask=1;mask<(1<<n);mask++){
+        var t=0,u=[];
+        for(var i=0;i<n;i++) if(mask&(1<<i)){t+=pieces[i];u.push(i);}
+        if(t>stockIn+0.001) continue;
+        var w=Math.round((stockIn-t)*10)/10;
+        if(w<=MAX_WASTE&&w<bestWaste){bestWaste=w;best=u.slice();}
+      }
+    } else {
+      var sp=stockIn,us=[];
+      for(var j=0;j<n;j++) if(pieces[j]<=sp+0.001){sp-=pieces[j];us.push(j);}
+      if(us.length){var ww=Math.round(sp*10)/10;if(ww<=MAX_WASTE){best=us;bestWaste=ww;}}
+    }
+    return best?{used:best,waste:bestWaste}:null;
+  }
+
+  function mktFt(arr){
+    if(!arr.length) return 0;
+    return Math.ceil(arr.reduce(function(a,b){return a+b;},0)/6)*0.5;
+  }
+
+  // Estimate future cost if we go greedy from here (with heavy market penalty)
+  function estimateTotal(pieces, stks){
+    var rem=pieces.slice().sort(function(a,b){return b-a;});
+    var total=0;
+    while(rem.length>0){
+      var best=null,bw=9999,bf=9999,bi=[];
+      for(var si=0;si<stks.length;si++){
+        var r=bestFill(rem,stks[si]*12);
+        if(!r) continue;
+        if(r.waste<bw||(r.waste===bw&&stks[si]<bf)){
+          bw=r.waste;bf=stks[si];bi=r.used.slice();
+          best={ft:stks[si],used:r.used};
+        }
+      }
+      if(best){
+        total+=best.ft;
+        var si2=bi.slice().sort(function(a,b){return b-a;});
+        for(var k=0;k<si2.length;k++) rem.splice(si2[k],1);
+      } else break;
+    }
+    // Heavy penalty for market cut (x3) to discourage stranding pieces
+    if(rem.length) total+=mktFt(rem)*3;
+    return total;
+  }
+
+  var pieces=pieceList.slice().sort(function(a,b){return b-a;});
+  var rods=[], market=[];
+
+  while(pieces.length>0){
+    var bestChoice=null, bestScore=9999999, bestFt=9999;
+
+    for(var si=0;si<stks.length;si++){
+      var r=bestFill(pieces, stks[si]*12);
+      if(!r) continue;
+      var rem=pieces.slice();
+      var idx=r.used.slice().sort(function(a,b){return b-a;});
+      for(var k=0;k<idx.length;k++) rem.splice(idx[k],1);
+      // Score: this rod ft + estimated future cost
+      var score=stks[si]+estimateTotal(rem,stks);
+      if(score<bestScore||(score===bestScore&&stks[si]<bestFt)){
+        bestScore=score; bestFt=stks[si];
+        bestChoice={ft:stks[si],waste:r.waste,cuts:r.used.map(function(i){return pieces[i];}),idx:r.used};
+      }
+    }
+
+    if(bestChoice){
+      rods.push({ft:bestChoice.ft,waste:bestChoice.waste,cuts:bestChoice.cuts});
+      var si2=bestChoice.idx.slice().sort(function(a,b){return b-a;});
+      for(var k=0;k<si2.length;k++) pieces.splice(si2[k],1);
+    } else {
+      market.push(pieces[0]); pieces.splice(0,1);
+    }
+  }
+
+  // Post-process: absorb market pieces into existing rods by upgrading stock
+  var still=[];
+  for(var mi=0;mi<market.length;mi++){
+    var mp=market[mi], abs=false;
+    for(var ri=0;ri<rods.length&&!abs;ri++){
+      var nt=rods[ri].cuts.reduce(function(a,b){return a+b;},0)+mp;
+      for(var si3=0;si3<stks.length&&!abs;si3++){
+        if(stks[si3]*12>=nt-0.001){
+          var nw=Math.round((stks[si3]*12-nt)*10)/10;
+          if(nw<=MAX_WASTE){rods[ri].cuts.push(mp);rods[ri].ft=stks[si3];rods[ri].waste=nw;abs=true;}
+        }
+      }
+    }
+    if(!abs) still.push(mp);
+  }
+
+  return {rods:rods, market:still};
+}
+function parseSizes(text){
+  var lines=text.split("\n"),results=[];
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].replace(/\s+/g,"");
+    if(!line) continue;
+    var parts=line.split("x");
+    if(parts.length<2) continue;
+    var wRaw=parseFloat(parts[0]),hRaw=parseFloat(parts[1]);
+    var qty=parts.length>=3?parseInt(parts[2],10):1;
+    if(isNaN(wRaw)||isNaN(hRaw)||wRaw<=0||hRaw<=0) continue;
+    if(isNaN(qty)||qty<1) qty=1;
+    var w=parseSot(wRaw),h=parseSot(hRaw);
+    results.push({w:w,h:h,wRaw:wRaw,hRaw:hRaw,qty:qty});
+  }
+  return results;
+}
+
+function runOptimizer(){
+  var text=document.getElementById("sizes").value.replace(/^\s+|\s+$/g,"");
+  if(!text){alert("Size daalen!");return;}
+  var frames=parseSizes(text);
+  if(!frames.length){alert("Format galat! Misal: 48x48");return;}
+
+  framesList=frames;
+  var dc26=[],dc30=[],m23=[],m28=[],m24=[],d29=[];
+  for(var fi=0;fi<frames.length;fi++){
+    var w=frames[fi].w,h=frames[fi].h,qty=frames[fi].qty;
+    var wm=Math.ceil(w),hm=Math.ceil(h);
+    for(var q=0;q<qty;q++){
+      dc26.push(wm+3);
+      dc30.push(wm+3);dc30.push(hm+3);dc30.push(hm+3);
+      m23.push(hm-1.5);m23.push(hm-1.5);
+      m28.push(hm-1.5);m28.push(hm-1.5);
+      m24.push((wm-6)/2);m24.push((wm-6)/2);m24.push((wm-6)/2);m24.push((wm-6)/2);
+      d29.push(hm-1.5);d29.push(hm-1.5);d29.push(wm/2);d29.push(wm/2);
+    }
+  }
+
+  var sections=[
+    {name:"DC26F",pieces:dc26,stocks:DC_STOCKS,minIn:DC_MIN_IN},
+    {name:"DC30F",pieces:dc30,stocks:DC_STOCKS,minIn:DC_MIN_IN},
+    {name:"M23",pieces:m23,stocks:M_STOCKS,minIn:M_MIN_IN},
+    {name:"M28",pieces:m28,stocks:M_STOCKS,minIn:M_MIN_IN},
+    {name:"M24",pieces:m24,stocks:M_STOCKS,minIn:M_MIN_IN},
+    {name:"D29",pieces:d29,stocks:M_STOCKS,minIn:M_MIN_IN}
+  ];
+
+  var planHTML="";
+  invoiceData={};shopData={};sectionRods={};
+
+  for(var si=0;si<sections.length;si++){
+    var sec=sections[si];
+    if(!sec.pieces.length) continue;
+    var result=optimizePieces(sec.pieces,sec.stocks,sec.minIn);
+
+    var totalFt=0,barGroups={};
+    for(var ri=0;ri<result.rods.length;ri++){
+      var rod=result.rods[ri];
+      barGroups[rod.ft]=(barGroups[rod.ft]||0)+1;
+      totalFt+=rod.ft;
+    }
+    var marketTotal=0;
+    for(var mi=0;mi<result.market.length;mi++) marketTotal+=result.market[mi];
+    var marketFt=0;
+    if(marketTotal>0){marketFt=roundup6(marketTotal);totalFt+=marketFt;}
+
+    invoiceData[sec.name]=totalFt;
+    shopData[sec.name]={rods:barGroups,cutFt:marketTotal>0?marketFt:null};
+    sectionRods[sec.name]=result.rods;
+    sectionRods[sec.name+"_market"]=result.market;
+
+    planHTML+='<div class="plan-sec">';
+    planHTML+='<div class="plan-name"><span>'+sec.name+'</span><span>'+totalFt+'ft</span></div>';
+
+    // Group rods by ft for numbering
+    var ftCount={};
+    for(var ri2=0;ri2<result.rods.length;ri2++){
+      var r=result.rods[ri2];
+      ftCount[r.ft]=(ftCount[r.ft]||0)+1;
+      var label=r.ft+'ft-'+ftCount[r.ft];
+      var totalIn=r.ft*12;
+      var trackHTML="";
+      for(var ci=0;ci<r.cuts.length;ci++){
+        var cv=r.cuts[ci];
+        var pct=Math.max((cv/totalIn)*100,2);
+        trackHTML+='<div class="cut-seg" style="width:'+pct+'%">'+cv+'"</div>';
+      }
+      if(r.waste>0.1){
+        var wpct=Math.max((r.waste/totalIn)*100,2);
+        trackHTML+='<div class="waste-seg" style="width:'+wpct+'%">'+r.waste+'"</div>';
+      }
+      var cutsStr=r.cuts.join('" + ')+'"';
+      planHTML+='<div class="rod-box">';
+      planHTML+='<div class="rod-hd"><span class="rod-ft">'+label+'</span><span class="rod-waste">Waste: '+r.waste+'"</span></div>';
+      planHTML+='<div class="rod-track">'+trackHTML+'</div>';
+      planHTML+='<div class="rod-cuts">['+cutsStr+']</div></div>';
+    }
+
+    if(result.market.length>0){
+      planHTML+='<div class="mkt-box"><div class="mkt-hd">Market Cut - '+marketFt+'ft</div>';
+      planHTML+='<div class="mkt-cuts">['+result.market.join('" + ')+'" ]</div></div>';
+    }
+    planHTML+='</div>';
+  }
+
+  document.getElementById("cutting-plan").innerHTML=planHTML;
+  document.getElementById("shop-btn").style.display="block";
+  document.getElementById("bill-btn").style.display="block";
+  document.getElementById("saveBtn").style.display="block";
+  document.getElementById("pair-btn").style.display="block";
+  document.getElementById("cut-table-btn").style.display="block";
+  document.getElementById("res").style.display="block";
+  document.getElementById("bill-gauge").value=document.getElementById("gauge").value;
+  document.getElementById("bill-disc").value=document.getElementById("disc").value;
+}
+
+function getDateTime(){
+  var d=new Date(),months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var h=d.getHours(),m=d.getMinutes(),ampm=h>=12?"PM":"AM";
+  h=h%12;if(h===0)h=12;
+  return d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+", "+h+":"+(m<10?"0":"")+m+" "+ampm;
+}
+
+// Shop data copy for editing
+var editShopData={};
+
+function buildShopCard(){
+  // Deep copy shopData for editing
+  editShopData={};
+  for(var k in shopData){
+    if(shopData.hasOwnProperty(k)){
+      editShopData[k]={rods:{},cutFt:shopData[k].cutFt};
+      for(var rk in shopData[k].rods){
+        if(shopData[k].rods.hasOwnProperty(rk)){
+          editShopData[k].rods[rk]=shopData[k].rods[rk];
+        }
+      }
+    }
+  }
+  renderShopCard();
+}
+
+function renderShopCard(){
+  var secs=Object.keys(editShopData);
+  var totalFracs=0;
+  secs.forEach(function(s){
+    totalFracs+=Object.keys(editShopData[s].rods).length;
+    if(editShopData[s].cutFt)totalFracs++;
+  });
+  var fs=totalFracs>20?0.85:totalFracs>15?1.0:totalFracs>10?1.15:totalFracs>6?1.3:1.4;
+
+  var card=document.getElementById('shop-card');
+  card.innerHTML='';
+
+  // Header
+  var hdr=document.createElement('div');
+  hdr.className='shop-header';
+  hdr.innerHTML='<div style="color:#fff;font-weight:900;text-transform:uppercase;font-size:'+(fs*0.85)+'rem">ADEEL WELDING & ALUMINIUM HOUSE</div>'
+    +'<div style="color:#c9a84c;font-weight:700;letter-spacing:2px;margin-top:3px;font-size:'+(fs*0.5)+'rem">LASURI - MARKET MATERIAL LIST</div>'
+    +'<div style="background:#25d366;display:inline-block;border-radius:20px;color:#000;font-weight:900;margin-top:8px;padding:5px 16px;font-size:'+(fs*0.65)+'rem">0321-7378024</div>'
+    +'<div style="color:#666;font-size:0.7rem;margin-top:6px">'+getDateTime()+'</div>';
+  card.appendChild(hdr);
+
+  secs.forEach(function(name){
+    var d=editShopData[name];
+    var fts=Object.keys(d.rods).map(Number).sort(function(a,b){return a-b;});
+
+    var row=document.createElement('div');
+    row.className='shop-row';
+    row.style.cursor='pointer';
+    row.onclick=(function(n){return function(){openEditPopup(n);};})(name);
+
+    // Section name
+    var secDiv=document.createElement('div');
+    secDiv.className='shop-sec';
+    secDiv.style.fontSize=fs+'rem';
+    secDiv.textContent=name;
+    row.appendChild(secDiv);
+
+    // Fractions
+    var fracsDiv=document.createElement('div');
+    fracsDiv.className='shop-fracs';
+
+    fts.forEach(function(ftv){
+      var frac=document.createElement('div');
+      frac.className='frac';
+
+      var top=document.createElement('span');
+      top.style.cssText='color:#7dff7d;font-weight:800;font-size:'+fs+'rem';
+      top.textContent=ftv;
+
+      var line=document.createElement('span');
+      line.className='frac-line';
+
+      var bot=document.createElement('span');
+      bot.style.cssText='color:#7dff7d;font-weight:700;font-size:'+(fs*0.8)+'rem';
+      bot.textContent=d.rods[ftv];
+
+      frac.appendChild(top);
+      frac.appendChild(line);
+      frac.appendChild(bot);
+      fracsDiv.appendChild(frac);
+    });
+
+    if(d.cutFt){
+      var cut=document.createElement('span');
+      cut.style.cssText='color:#f59e0b;font-weight:700;font-size:'+(fs*0.8)+'rem';
+      cut.textContent='Cut: '+d.cutFt+'ft';
+      fracsDiv.appendChild(cut);
+    }
+
+    row.appendChild(fracsDiv);
+
+    var pencil=document.createElement('span');
+    pencil.style.cssText='color:#888;font-size:0.85rem;margin-left:4px;flex-shrink:0';
+    pencil.textContent='✏️';
+    row.appendChild(pencil);
+
+    card.appendChild(row);
+  });
+}
+
+function openEditPopup(secName){
+  var d=editShopData[secName];
+  var fts=Object.keys(d.rods).map(Number).sort(function(a,b){return a-b;});
+
+  var overlay=document.createElement('div');
+  overlay.id='ep-popup';
+  overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:99999;display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box';
+
+  var box=document.createElement('div');
+  box.style.cssText='background:#1a1a1a;border:2px solid #c9a84c;border-radius:14px;padding:16px;width:100%;max-width:340px';
+
+  var title=document.createElement('div');
+  title.style.cssText='color:#c9a84c;font-weight:900;font-size:1.1rem;margin-bottom:14px;text-align:center';
+  title.textContent=secName+' Edit';
+  box.appendChild(title);
+
+  var lbl1=document.createElement('div');
+  lbl1.style.cssText='color:#888;font-size:0.75rem;margin-bottom:6px;text-transform:uppercase';
+  lbl1.textContent='Lengths';
+  box.appendChild(lbl1);
+
+  var lengthsDiv=document.createElement('div');
+  lengthsDiv.id='ep-lengths';
+  fts.forEach(function(ftv){
+    lengthsDiv.appendChild(makeLengthRow(ftv, d.rods[ftv]));
+  });
+  box.appendChild(lengthsDiv);
+
+  var addBtn=document.createElement('button');
+  addBtn.style.cssText='background:#1a3a1a;color:#7dff7d;border:1px solid #7dff7d;border-radius:6px;padding:8px 14px;cursor:pointer;font-weight:bold;margin-bottom:12px;font-size:0.85rem';
+  addBtn.textContent='+ Length Add';
+  addBtn.onclick=addEpLength;
+  box.appendChild(addBtn);
+
+  var lbl2=document.createElement('div');
+  lbl2.style.cssText='color:#888;font-size:0.75rem;margin-bottom:6px;text-transform:uppercase';
+  lbl2.textContent='Cut Piece';
+  box.appendChild(lbl2);
+
+  var cutRow=document.createElement('div');
+  cutRow.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:14px';
+
+  var cutInput=document.createElement('input');
+  cutInput.type='number';
+  cutInput.id='ep-cut';
+  cutInput.value=d.cutFt||'';
+  cutInput.placeholder='0';
+  cutInput.style.cssText='width:70px;background:#252525;border:1px solid #f59e0b;border-radius:6px;padding:8px;color:#f59e0b;font-size:1rem;text-align:center';
+
+  var cutLbl=document.createElement('span');
+  cutLbl.style.color='#888';
+  cutLbl.textContent='ft';
+
+  var clearBtn=document.createElement('button');
+  clearBtn.style.cssText='background:#5a1a1a;color:#ff6b6b;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-size:0.8rem';
+  clearBtn.textContent='Clear';
+  clearBtn.onclick=function(){cutInput.value='';};
+
+  cutRow.appendChild(cutInput);
+  cutRow.appendChild(cutLbl);
+  cutRow.appendChild(clearBtn);
+  box.appendChild(cutRow);
+
+  var btnRow=document.createElement('div');
+  btnRow.style.cssText='display:flex;gap:8px';
+
+  var saveBtn=document.createElement('button');
+  saveBtn.style.cssText='flex:1;background:#c9a84c;color:#000;border:none;border-radius:8px;padding:12px;font-weight:bold;cursor:pointer;font-size:1rem';
+  saveBtn.textContent='SAVE';
+  saveBtn.onclick=function(){saveEpChanges(secName);};
+
+  var cancelBtn=document.createElement('button');
+  cancelBtn.style.cssText='flex:1;background:#333;color:#aaa;border:none;border-radius:8px;padding:12px;font-weight:bold;cursor:pointer;font-size:1rem';
+  cancelBtn.textContent='CANCEL';
+  cancelBtn.onclick=closeEditPopup;
+
+  btnRow.appendChild(saveBtn);
+  btnRow.appendChild(cancelBtn);
+  box.appendChild(btnRow);
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+}
+
+function makeLengthRow(ftVal, qtyVal){
+  var row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px';
+
+  var ftIn=document.createElement('input');
+  ftIn.type='number';
+  ftIn.value=ftVal||'';
+  ftIn.placeholder='ft';
+  ftIn.className='ep-ft';
+  ftIn.style.cssText='width:60px;background:#252525;border:1px solid #444;border-radius:6px;padding:8px;color:#7dff7d;font-size:1rem;text-align:center';
+
+  var lbl=document.createElement('span');
+  lbl.style.color='#888';
+  lbl.textContent='ft x';
+
+  var qtyIn=document.createElement('input');
+  qtyIn.type='number';
+  qtyIn.value=qtyVal||1;
+  qtyIn.placeholder='qty';
+  qtyIn.className='ep-qty';
+  qtyIn.style.cssText='width:50px;background:#252525;border:1px solid #444;border-radius:6px;padding:8px;color:#7dff7d;font-size:1rem;text-align:center';
+
+  var del=document.createElement('button');
+  del.style.cssText='background:#5a1a1a;color:#ff6b6b;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:bold';
+  del.textContent='X';
+  del.onclick=function(){row.remove();};
+
+  row.appendChild(ftIn);
+  row.appendChild(lbl);
+  row.appendChild(qtyIn);
+  row.appendChild(del);
+  return row;
+}
+function addEpLength(){
+  var container=document.getElementById('ep-lengths');
+  var row=document.createElement('div');
+  row.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:8px';
+  row.innerHTML='<input type="number" placeholder="ft" style="width:60px;background:#252525;border:1px solid #444;border-radius:6px;padding:8px;color:#7dff7d;font-size:1rem;text-align:center" class="ep-ft"><span style="color:#888">ft ×</span><input type="number" value="1" style="width:50px;background:#252525;border:1px solid #444;border-radius:6px;padding:8px;color:#7dff7d;font-size:1rem;text-align:center" class="ep-qty"><button onclick="this.parentNode.remove()" style="background:#5a1a1a;color:#ff6b6b;border:none;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:bold">✕</button>';
+  container.appendChild(row);
+  row.querySelector('.ep-ft').focus();
+}
+
+function saveEpChanges(secName){
+  var ftInputs=document.querySelectorAll('#ep-lengths .ep-ft');
+  var qtyInputs=document.querySelectorAll('#ep-lengths .ep-qty');
+  var newRods={};
+  var totalFt=0;
+  for(var i=0;i<ftInputs.length;i++){
+    var ft=parseInt(ftInputs[i].value,10);
+    var qty=parseInt(qtyInputs[i].value,10)||1;
+    if(ft>0){
+      newRods[ft]=(newRods[ft]||0)+qty;
+      totalFt+=ft*qty;
+    }
+  }
+  var cutVal=parseFloat(document.getElementById('ep-cut').value)||0;
+  if(cutVal>0) totalFt+=cutVal;
+  editShopData[secName].rods=newRods;
+  editShopData[secName].cutFt=cutVal>0?cutVal:null;
+  // Update invoiceData so bill reflects changes
+  invoiceData[secName]=totalFt;
+  closeEditPopup();
+  renderShopCard();
+  // If bill overlay is open, recalculate automatically
+  var billOverlay=document.getElementById('bill-overlay');
+  if(billOverlay && billOverlay.style.display==='block'){
+    calcBill();
+  }
+}
+
+function closeEditPopup(){
+  var p=document.getElementById('ep-popup');
+  if(p)p.remove();
+}
+
+function calcBill(){
+  var RATES={"DC26F":{"1.2":880,"1.6":1049,"2.0":1244},"DC30F":{"1.2":754,"1.6":911,"2.0":1067},"M23":{"1.2":354,"1.6":445,"2.0":542},"M28":{"1.2":431,"1.6":534,"2.0":645},"M24":{"1.2":420,"1.6":447,"2.0":605},"D29":{"1.2":274,"1.6":274,"2.0":274}};
+  var gauge=document.getElementById("bill-gauge").value;
+  var disc=parseFloat(document.getElementById("bill-disc").value)||0;
+  var glassRate=parseFloat(document.getElementById("glassRate").value)||0;
+  var accAmt=parseFloat(document.getElementById("accAmt").value)||0;
+  var labourAmt=parseFloat(document.getElementById("labourAmt").value)||0;
+  var html='<div class="bd"><div class="bd-title">🔩 Aluminium Bill</div>';
+  var aluGross=0;
+  for(var key in invoiceData){
+    if(invoiceData.hasOwnProperty(key)){
+      var ft=invoiceData[key],rate=RATES[key][gauge],amt=ft*rate;
+      aluGross+=amt;
+      html+='<div class="br"><span class="bn">'+key+' ('+ft+'ft x '+rate+')</span><span class="bv">Rs.'+Math.round(amt)+'</span></div>';
+    }
+  }
+  html+='</div>';
+  var da=aluGross*disc/100,aluNet=aluGross-da;
+  html+='<div class="tr" style="background:#333;color:#ccc"><span>ALUMINIUM GROSS</span><span>Rs.'+Math.round(aluGross)+'</span></div>';
+  html+='<div class="tr" style="background:#1e1a0f;color:#c9a84c"><span>DISCOUNT ('+disc+'%)</span><span>- Rs.'+Math.round(da)+'</span></div>';
+  html+='<div class="tr" style="background:#2a2a1a;color:#c9a84c"><span>ALUMINIUM NET</span><span>Rs.'+Math.round(aluNet)+'</span></div>';
+  var glassTotal=0,glassSqft=0;
+  if(framesList.length>0){
+    html+='<div class="bd" style="margin-top:14px"><div class="bd-title" style="color:#60a5fa">🪟 Glass Bill</div>';
+    var num=1;
+    for(var fi=0;fi<framesList.length;fi++){
+      var f=framesList[fi];
+      for(var q=0;q<f.qty;q++){
+        var sqft=(f.w*f.h)/144;
+        glassSqft+=sqft;
+        html+='<div class="br"><span class="bn">#'+num+' ('+f.wRaw+'x'+f.hRaw+') = '+sqft.toFixed(2)+' sqft</span><span class="bv">Rs.'+Math.round(sqft*glassRate)+'</span></div>';
+        num++;
+      }
+    }
+    glassTotal=glassSqft*glassRate;
+    html+='</div>';
+    html+='<div class="tr" style="background:#1a2a3a;color:#60a5fa"><span>GLASS TOTAL ('+glassSqft.toFixed(2)+' sqft)</span><span>Rs.'+Math.round(glassTotal)+'</span></div>';
+  }
+  html+='<div class="tr" style="background:#1a3a1a;color:#7dff7d;margin-top:10px"><span>ACCESSORIES</span><span>Rs.'+Math.round(accAmt)+'</span></div>';
+  html+='<div class="tr" style="background:#2a1a3a;color:#d4a0ff"><span>LABOUR</span><span>Rs.'+Math.round(labourAmt)+'</span></div>';
+  var grandTotal=aluNet+glassTotal+accAmt+labourAmt;
+  html+='<div class="tr" style="background:#c9a84c;color:#000;font-size:1.3rem;margin-top:10px"><span>GRAND TOTAL</span><span>Rs.'+Math.round(grandTotal)+'</span></div>';
+  document.getElementById("bill-content").innerHTML=html;
+}
+
+// ===== SUBSCRIPTION SYSTEM =====
+// 30 days OR 100 uses — jo pehle khatam ho
+var MAX_DAYS = 30;
+var MAX_USES = 100;
+var ADMIN_PHONE = "0321-7378024";
+
+function getSubData(){
+  try{
+    var raw = localStorage.getItem("adeelSub");
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return null;
+}
+
+function saveSubData(data){
+  try{localStorage.setItem("adeelSub", JSON.stringify(data));}catch(e){}
+}
+
+function activateSub(){
+  var now = Date.now();
+  saveSubData({
+    startDate: now,
+    expireDate: now + (MAX_DAYS * 24 * 60 * 60 * 1000),
+    uses: 0
+  });
+}
+
+var _sessionUnlocked = false;
+
+function checkPw(){
+  // Already unlocked this session
+  if(_sessionUnlocked) return true;
+
+  var sub = getSubData();
+  if(!sub) return false;
+
+  var now = Date.now();
+  var daysLeft = Math.ceil((sub.expireDate - now) / (24*60*60*1000));
+  var usesLeft = MAX_USES - sub.uses;
+
+  // Check if expired
+  if(daysLeft <= 0 || usesLeft <= 0) return false;
+
+  // Count this use only once per session (on page load)
+  sub.uses++;
+  saveSubData(sub);
+  _sessionUnlocked = true;
+  return true;
+}
+
+function getRemainingInfo(){
+  var sub = getSubData();
+  if(!sub) return null;
+  var now = Date.now();
+  var daysLeft = Math.ceil((sub.expireDate - now) / (24*60*60*1000));
+  var usesLeft = MAX_USES - sub.uses;
+  return {days: Math.max(0,daysLeft), uses: Math.max(0,usesLeft)};
+}
+
+function showLock(){
+  var sub = getSubData();
+  var expired = false;
+  var reason = "";
+  if(sub){
+    var now = Date.now();
+    var daysLeft = Math.ceil((sub.expireDate - now) / (24*60*60*1000));
+    var usesLeft = MAX_USES - sub.uses;
+    expired = true;
+    if(daysLeft <= 0) reason = "30 din ka package khatam ho gaya!";
+    else if(usesLeft <= 0) reason = "100 uses complete ho gaye!";
+    else { expired = false; }
+  }
+
+  var box = document.createElement("div");
+  box.id = "lockBox";
+  box.style.cssText = "position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;background:rgba(0,0,0,0.97);display:flex;align-items:center;justify-content:center;padding:16px;box-sizing:border-box";
+
+  var inner = document.createElement("div");
+  inner.style.cssText = "background:#1a1a1a;border:2px solid #c9a84c;border-radius:14px;padding:24px;text-align:center;width:100%;max-width:300px";
+
+  var title = document.createElement("p");
+  title.style.cssText = "color:#c9a84c;font-size:1.1rem;font-weight:bold;margin-bottom:6px";
+  title.textContent = expired ? "PACKAGE KHATAM" : "PROTECTED";
+  inner.appendChild(title);
+
+  if(expired && reason){
+    var reasonEl = document.createElement("p");
+    reasonEl.style.cssText = "color:#ff6b6b;font-size:0.85rem;margin-bottom:10px;font-weight:bold";
+    reasonEl.textContent = reason;
+    inner.appendChild(reasonEl);
+  }
+
+  var sub2 = document.createElement("p");
+  sub2.style.cssText = "color:#888;font-size:0.8rem;margin-bottom:14px;line-height:1.5";
+  sub2.textContent = expired
+    ? "Package renew karne ke liye admin se rabta karein:"
+    : "Adeel Welding & Aluminium House";
+  inner.appendChild(sub2);
+
+  // Admin contact
+  var contactBox = document.createElement("div");
+  contactBox.style.cssText = "background:#1a2a1a;border:1px solid #25d366;border-radius:8px;padding:10px;margin-bottom:14px";
+
+  var contactLbl = document.createElement("div");
+  contactLbl.style.cssText = "color:#888;font-size:0.72rem;margin-bottom:4px;text-transform:uppercase";
+  contactLbl.textContent = "Contact Admin";
+  contactBox.appendChild(contactLbl);
+
+  var phoneEl = document.createElement("a");
+  phoneEl.href = "tel:"+ADMIN_PHONE;
+  phoneEl.style.cssText = "color:#25d366;font-size:1.1rem;font-weight:900;text-decoration:none;display:block";
+  phoneEl.textContent = ADMIN_PHONE;
+  contactBox.appendChild(phoneEl);
+
+  inner.appendChild(contactBox);
+
+  // Password input
+  var pwInput = document.createElement("input");
+  pwInput.type = "password";
+  pwInput.id = "pwI";
+  pwInput.placeholder = "Admin password daalen";
+  pwInput.style.cssText = "width:100%;padding:10px;border-radius:6px;border:1px solid #555;background:#252525;color:#fff;font-size:1rem;margin-bottom:10px;box-sizing:border-box";
+  inner.appendChild(pwInput);
+
+  var openBtn = document.createElement("button");
+  openBtn.id = "pwS";
+  openBtn.style.cssText = "width:100%;background:#c9a84c;border:none;padding:11px;border-radius:6px;font-size:1rem;cursor:pointer;font-weight:bold";
+  openBtn.textContent = "ACTIVATE / OPEN";
+  inner.appendChild(openBtn);
+
+  var errEl = document.createElement("p");
+  errEl.id = "pwE";
+  errEl.style.cssText = "color:#ff6b6b;font-size:0.8rem;margin-top:8px;display:none";
+  errEl.textContent = "Galat password!";
+  inner.appendChild(errEl);
+
+  box.appendChild(inner);
+  document.body.appendChild(box);
+
+  document.getElementById("pwS").onclick = function(){
+    var val = document.getElementById("pwI").value;
+    if(val === "Hassanm8480317"){
+      activateSub();
+      _sessionUnlocked = true;
+      document.body.removeChild(box);
+      window.location.reload();
+    } else {
+      document.getElementById("pwE").style.display = "block";
+      document.getElementById("pwI").value = "";
+    }
+  };
+
+  pwInput.addEventListener("keyup", function(e){
+    if(e.keyCode === 13) document.getElementById("pwS").click();
+  });
+}
+
+function buildGlassTable(){
+  if(!framesList.length)return;
+  var thS='style="background:#1a2a3a;color:#60a5fa;padding:8px 6px;text-align:center;border:1px solid #333;font-size:0.85rem"';
+  var tdS='style="padding:10px 6px;border:1px solid #222;text-align:center;font-size:0.85rem"';
+  var tdSz='style="padding:10px 6px;border:1px solid #222;text-align:center;font-size:0.85rem;color:#c9a84c;font-weight:bold"';
+  var html='<table style="width:100%;border-collapse:collapse"><thead><tr><th '+thS+'>#</th><th '+thS+'>Size</th><th '+thS+'>Glass H</th><th '+thS+'>Glass W</th><th '+thS+'>Pcs</th></tr></thead><tbody>';
+  var num=1;
+  for(var fi=0;fi<framesList.length;fi++){
+    var f=framesList[fi],w=f.w,h=f.h;
+    for(var q=0;q<f.qty;q++){
+      var glassH=toSotStr(h-1.75-4.125),glassW=toSotStr((w-6)/2+0.5);
+      var rowBg=num%2===0?'background:#1a1a1a':'background:#0f0f0f';
+      html+='<tr style="'+rowBg+'"><td '+tdS+' style="color:#888">'+num+'</td><td '+tdSz+'>'+f.wRaw+'x'+f.hRaw+'</td><td '+tdS+'><span style="color:#60a5fa;font-weight:bold">'+glassH+'</span></td><td '+tdS+'><span style="color:#60a5fa;font-weight:bold">'+glassW+'</span></td><td '+tdS+'><input type="number" value="2" min="0" style="width:44px;background:#252525;border:1px solid #444;border-radius:4px;color:#60a5fa;text-align:center;padding:4px;font-weight:bold"></td></tr>';
+      num++;
+    }
+  }
+  html+='</tbody></table>';
+  document.getElementById("glass-table-content").innerHTML=html;
+  document.getElementById("glass-table-overlay").style.display="block";
+}
+
+function buildCuttingTable(){
+  if(!framesList.length){alert("Pehle sizes daalen!");return;}
+  var thS='style="background:#1e1a0f;color:#c9a84c;padding:8px 6px;text-align:center;border:1px solid #333;font-size:0.8rem;white-space:nowrap"';
+  var tdS='style="padding:8px 6px;border:1px solid #222;text-align:center;font-size:0.8rem"';
+  var tdSz='style="padding:8px 6px;border:1px solid #222;text-align:center;font-size:0.8rem;color:#c9a84c;font-weight:bold"';
+  var html='<table style="width:100%;border-collapse:collapse"><thead><tr><th '+thS+'>#</th><th '+thS+'>Size</th><th '+thS+'>M23</th><th '+thS+'>M28</th><th '+thS+'>M24</th><th '+thS+'>D29</th></tr></thead><tbody>';
+  var num=1;
+  for(var fi=0;fi<framesList.length;fi++){
+    var f=framesList[fi],w=f.w,h=f.h;
+    for(var q=0;q<f.qty;q++){
+      var m23v=h-1.75,m24v=(w-6)/2;
+      var rowBg=num%2===0?'background:#1a1a1a':'background:#0f0f0f';
+      html+='<tr style="'+rowBg+'"><td '+tdS+' style="color:#888">'+num+'</td><td '+tdSz+'>'+f.wRaw+'x'+f.hRaw+'</td><td '+tdS+'><span style="color:#7dff7d">'+toSotStr(m23v)+'</span><br><span style="color:#888;font-size:0.7rem">×2</span></td><td '+tdS+'><span style="color:#7dff7d">'+toSotStr(m23v)+'</span><br><span style="color:#888;font-size:0.7rem">×2</span></td><td '+tdS+'><span style="color:#7dff7d">'+toSotStr(m24v)+'</span><br><span style="color:#888;font-size:0.7rem">×4</span></td><td '+tdS+'><span style="color:#7dff7d">'+toSotStr(m23v)+' ×2</span><br><span style="color:#7db8ff">'+toSotStr(m24v+2)+' ×2</span></td></tr>';
+      num++;
+    }
+  }
+  html+='</tbody></table>';
+  document.getElementById("cut-table-content").innerHTML=html;
+  document.getElementById("glassTableBtn").onclick=function(){buildGlassTable();};
+  document.getElementById("cut-table-overlay").style.display="block";
+}
+
+function getRodCounts(cuts){
+  var counts={};
+  for(var i=0;i<cuts.length;i++){var key=Math.round(cuts[i]*10)/10;counts[key]=(counts[key]||0)+1;}
+  return counts;
+}
+
+function buildPairingGuide(){
+  var secNames=["M23","M28","M24","D29"],html="";
+  for(var si=0;si<secNames.length;si++){
+    var name=secNames[si],rods=sectionRods[name];
+    if(!rods||!rods.length)continue;
+    html+='<div style="background:#1a1a1a;border:1px solid #d4a0ff;border-radius:10px;padding:12px;margin-bottom:12px"><div style="color:#d4a0ff;font-weight:900;font-size:1rem;margin-bottom:10px;border-bottom:1px solid #333;padding-bottom:6px">'+name+'</div>';
+    var used=[];for(var i=0;i<rods.length;i++)used.push(false);
+    while(true){
+      var bestI=-1,bestJ=-1,bestScore=0,bestCommon={};
+      for(var ii=0;ii<rods.length;ii++){
+        if(used[ii])continue;
+        for(var jj=ii+1;jj<rods.length;jj++){
+          if(used[jj])continue;
+          var c1=getRodCounts(rods[ii].cuts),c2=getRodCounts(rods[jj].cuts),common={},score=0;
+          for(var sz in c1){if(c1.hasOwnProperty(sz)&&c2.hasOwnProperty(sz)){var cnt=Math.min(c1[sz],c2[sz]);common[sz]=cnt;score+=cnt;}}
+          if(score>bestScore){bestScore=score;bestI=ii;bestJ=jj;bestCommon=common;}
+        }
+      }
+      if(bestI===-1||bestScore===0){
+        for(var ii2=0;ii2<rods.length;ii2++){
+          if(used[ii2])continue;
+          html+='<div style="background:#252525;border-radius:8px;padding:10px;margin-bottom:8px"><div style="color:#888;font-size:0.8rem;margin-bottom:6px">📌 '+rods[ii2].ft+'ft — alag katna hai:</div>';
+          var sc=getRodCounts(rods[ii2].cuts);
+          for(var szk in sc){if(sc.hasOwnProperty(szk))html+='<div style="color:#7dff7d;font-size:0.85rem;padding:2px 0">→ '+szk+'" × '+sc[szk]+' pcs</div>';}
+          html+='</div>';
+        }
+        break;
+      }
+      used[bestI]=true;used[bestJ]=true;
+      var r1=rods[bestI],r2=rods[bestJ];
+      html+='<div style="background:#1e1a2e;border:1px solid #d4a0ff;border-radius:8px;padding:10px;margin-bottom:8px"><div style="color:#d4a0ff;font-weight:bold;font-size:0.85rem;margin-bottom:8px">✂️ '+r1.ft+'ft + '+r2.ft+'ft baandho:</div>';
+      for(var szc in bestCommon){if(bestCommon.hasOwnProperty(szc))html+='<div style="color:#fff;font-size:0.9rem;padding:3px 0">→ <span style="color:#f59e0b">'+szc+'"</span> × '+bestCommon[szc]+' baar cut = <span style="color:#7dff7d">'+(bestCommon[szc]*2)+' pcs</span></div>';}
+      var cr1=getRodCounts(r1.cuts),cr2=getRodCounts(r2.cuts);
+      for(var szr in cr1){if(cr1.hasOwnProperty(szr)){var rm1=cr1[szr]-(bestCommon[szr]||0);if(rm1>0)html+='<div style="color:#888;font-size:0.8rem;padding:2px 0">+ '+r1.ft+'ft se alag: '+szr+'" × '+rm1+' pcs</div>';}}
+      for(var szr2 in cr2){if(cr2.hasOwnProperty(szr2)){var rm2=cr2[szr2]-(bestCommon[szr2]||0);if(rm2>0)html+='<div style="color:#888;font-size:0.8rem;padding:2px 0">+ '+r2.ft+'ft se alag: '+szr2+'" × '+rm2+' pcs</div>';}}
+      html+='</div>';
+    }
+    if(sectionRods[name+"_market"]&&sectionRods[name+"_market"].length>0){
+      var mcuts=sectionRods[name+"_market"],mc=getRodCounts(mcuts);
+      html+='<div style="background:#1a1a0a;border:1px solid #f59e0b;border-radius:8px;padding:10px;margin-bottom:8px"><div style="color:#f59e0b;font-weight:bold;font-size:0.8rem;margin-bottom:6px">🛒 Market Cut pcs:</div>';
+      for(var mszk in mc){if(mc.hasOwnProperty(mszk))html+='<div style="color:#fde047;font-size:0.85rem;padding:2px 0">→ '+mszk+'" × '+mc[mszk]+' pcs</div>';}
+      html+='</div>';
+    }
+    html+='</div>';
+  }
+  document.getElementById("pair-content").innerHTML=html||'<div style="color:#888;text-align:center;padding:20px">Koi data nahi</div>';
+  document.getElementById("pair-overlay").style.display="block";
+}
+
+function saveRecord(){
+  var name=document.getElementById("custName").value.replace(/^\s+|\s+$/g,"")||"Customer "+new Date().toLocaleDateString();
+  var d=new Date(),months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var dateStr=d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear()+", "+d.getHours()+":"+("0"+d.getMinutes()).slice(-2);
+  var record={id:Date.now(),name:name,date:dateStr,sizes:document.getElementById("sizes").value,invoiceData:JSON.parse(JSON.stringify(invoiceData)),shopData:JSON.parse(JSON.stringify(shopData)),gauge:document.getElementById("gauge").value,planHTML:document.getElementById("cutting-plan").innerHTML};
+  var records=[];
+  try{var stored=localStorage.getItem("adeelHistory");if(stored)records=JSON.parse(stored);}catch(e){}
+  records.unshift(record);
+  try{localStorage.setItem("adeelHistory",JSON.stringify(records));}catch(e){}
+  alert("Save ho gaya: "+name);
+}
+
+function loadHistory(filter){
+  var records=[];
+  try{var stored=localStorage.getItem("adeelHistory");if(stored)records=JSON.parse(stored);}catch(e){}
+  if(filter){var fl=filter.toLowerCase(),filtered=[];for(var i=0;i<records.length;i++){if(records[i].name.toLowerCase().indexOf(fl)>=0)filtered.push(records[i]);}records=filtered;}
+  var html="";
+  if(!records.length){html='<div style="color:#888;text-align:center;padding:20px">Koi record nahi mila</div>';}
+  else{
+    for(var i=0;i<records.length;i++){
+      var r=records[i];
+      html+='<div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:12px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><div style="color:#c9a84c;font-weight:900;font-size:1rem">'+r.name+'</div><button onclick="deleteRecord('+r.id+')" style="background:#5a1a1a;color:#ff6b6b;border:none;border-radius:5px;padding:4px 10px;cursor:pointer;font-size:0.8rem">Delete</button></div><div style="color:#666;font-size:0.75rem;margin-bottom:8px">'+r.date+'</div><div style="color:#7dff7d;font-size:0.8rem;font-family:monospace;background:#252525;padding:6px 8px;border-radius:5px;margin-bottom:8px;white-space:pre-wrap">'+r.sizes+'</div><div style="display:flex;gap:6px"><button onclick="loadRecord('+r.id+')" style="flex:1;background:#c9a84c;color:#000;border:none;border-radius:6px;padding:8px;font-weight:bold;cursor:pointer">Load</button></div></div>';
+    }
+  }
+  document.getElementById("hist-list").innerHTML=html;
+}
+
+function deleteRecord(id){
+  var records=[];
+  try{var stored=localStorage.getItem("adeelHistory");if(stored)records=JSON.parse(stored);}catch(e){}
+  var nr=[];for(var i=0;i<records.length;i++){if(records[i].id!==id)nr.push(records[i]);}
+  try{localStorage.setItem("adeelHistory",JSON.stringify(nr));}catch(e){}
+  loadHistory(document.getElementById("searchInput").value);
+}
+
+function loadRecord(id){
+  var records=[];
+  try{var stored=localStorage.getItem("adeelHistory");if(stored)records=JSON.parse(stored);}catch(e){}
+  var r=null;for(var i=0;i<records.length;i++){if(records[i].id===id){r=records[i];break;}}
+  if(!r)return;
+  document.getElementById("custName").value=r.name;
+  document.getElementById("sizes").value=r.sizes;
+  document.getElementById("gauge").value=r.gauge;
+  invoiceData=r.invoiceData;shopData=r.shopData;
+  document.getElementById("cutting-plan").innerHTML=r.planHTML;
+  document.getElementById("shop-btn").style.display="block";
+  document.getElementById("bill-btn").style.display="block";
+  document.getElementById("saveBtn").style.display="block";
+  document.getElementById("res").style.display="block";
+  document.getElementById("hist-overlay").style.display="none";
+  document.getElementById("bill-gauge").value=r.gauge;
+}
+
+function buildCustomerBill(){
+  var gauge=document.getElementById('bill-gauge').value;
+  var glassMm=document.getElementById('glassMm')?document.getElementById('glassMm').value:'5';
+  var aluColourEl=document.getElementById('aluColour');
+  var glassColourEl=document.getElementById('glassColour');
+  var aluColourSel=aluColourEl?aluColourEl.value:'White / سفید';
+  var glassColourSel=glassColourEl?glassColourEl.value:'Clear / شفاف';
+  var aluColour=aluColourSel==='custom'?((document.getElementById('aluColourCustom')||{}).value||'Custom'):aluColourSel;
+  var glassColour=glassColourSel==='custom'?((document.getElementById('glassColourCustom')||{}).value||'Custom'):glassColourSel;
+  // Colour mapping for text color
+  var colourMap={
+    'White / سفید':'#888888',
+    'Brown / براؤں':'#795548',
+    'Champagne / شیمپین':'#c8a96e',
+    'Black / کالا':'#212121',
+    'Silver / سلور':'#757575',
+    'Clear / شفاف':'#42a5f5',
+    'Green / سبز':'#2e7d32',
+    'Blue / نیلا':'#1565c0',
+    'Bronze / کانسی':'#bf8040'
+  };
+  var aluColourHex=colourMap[aluColour]||'#e65100';
+  var glassColourHex=colourMap[glassColour]||'#c62828';
+  var disc=parseFloat(document.getElementById('bill-disc').value)||0;
+  var glassRate=parseFloat(document.getElementById('glassRate').value)||0;
+  var accAmt=parseFloat(document.getElementById('accAmt').value)||0;
+  var labourAmt=parseFloat(document.getElementById('labourAmt').value)||0;
+  var custName=document.getElementById('custName').value||'';
+
+  var RATES={"DC26F":{"1.2":880,"1.6":1049,"2.0":1244},"DC30F":{"1.2":754,"1.6":911,"2.0":1067},"M23":{"1.2":354,"1.6":445,"2.0":542},"M28":{"1.2":431,"1.6":534,"2.0":645},"M24":{"1.2":420,"1.6":447,"2.0":605},"D29":{"1.2":274,"1.6":274,"2.0":274}};
+  var aluGross=0;
+  for(var key in invoiceData){
+    if(invoiceData.hasOwnProperty(key)) aluGross+=invoiceData[key]*RATES[key][gauge];
+  }
+  var da=aluGross*disc/100, aluNet=aluGross-da;
+  var glassSqftTotal=0;
+  if(framesList.length>0){
+    for(var fi=0;fi<framesList.length;fi++)
+      for(var q=0;q<framesList[fi].qty;q++)
+        glassSqftTotal+=(framesList[fi].w*framesList[fi].h)/144;
+  }
+  var glassTotal=glassSqftTotal*glassRate;
+  var grandTotal=Math.round(aluNet+glassTotal+accAmt+labourAmt);
+  var totalSqft=glassSqftTotal||1;
+
+  // Date/time
+  var d=new Date();
+  var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  var monthsUr=["\u062c\u0646\u0648\u0631\u06cc","\u0641\u0631\u0648\u0631\u06cc","\u0645\u0627\u0631\u0686","\u0627\u067e\u0631\u06cc\u0644","\u0645\u0626\u06cc","\u062c\u0648\u0646","\u062c\u0648\u0644\u0627\u0626\u06cc","\u0627\u06af\u0633\u062a","\u0633\u062a\u0645\u0628\u0631","\u0627\u06a9\u062a\u0648\u0628\u0631","\u0646\u0648\u0645\u0628\u0631","\u062f\u0633\u0645\u0628\u0631"];
+  var h=d.getHours(),m=d.getMinutes(),ampm=h>=12?"PM":"AM";
+  h=h%12;if(h===0)h=12;
+  var dateEn=d.getDate()+" "+months[d.getMonth()]+" "+d.getFullYear();
+  var dateUr=d.getDate()+" "+monthsUr[d.getMonth()]+" "+d.getFullYear();
+  var timeStr=h+":"+(m<10?"0":"")+m+" "+ampm;
+  var invNo="AWH-"+d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")+"-"+String(Math.floor(Math.random()*999)+1).padStart(3,"0");
+
+  var html='<div id="printable-bill" style="background:#fff;color:#000;font-family:Arial,sans-serif;padding:20px;border-radius:10px">';
+
+  // Header
+  html+='<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">';
+  // Left - Shop info
+  html+='<div>';
+  
+  html+='<div style="font-size:0.9rem;font-weight:bold;color:#1a3a6a">Adeel Welding & Aluminium House</div>';
+  html+='<div style="font-size:0.75rem;color:#666">\u0644\u0633\u0648\u0691\u06cc \u06a9\u0644\u0627\u06ba\u060c \u067e\u0646\u062c\u0627\u0628\u060c \u067e\u0627\u06a9\u0633\u062a\u0627\u0646</div>';
+  html+='<div style="font-size:0.75rem;color:#666">Lasuri Kalan, Punjab, Pakistan</div>';
+  html+='<div style="font-size:0.85rem;font-weight:bold;color:#1a3a6a;margin-top:3px">\u260e 0321-7378024</div>';
+  html+='</div>';
+  // Right - Invoice badge
+  html+='<div style="text-align:right">';
+  html+='<div style="background:#1a3a6a;color:#fff;padding:6px 14px;border-radius:6px;font-weight:900;font-size:0.95rem;margin-bottom:6px">INVOICE / \u0628\u0644</div>';
+  html+='<div style="font-size:0.75rem;color:#555">Invoice No: <b>'+invNo+'</b></div>';
+  html+='<div style="font-size:0.75rem;color:#555">Date: <b>'+dateEn+'</b></div>';
+  html+='<div style="font-size:0.75rem;color:#555;direction:rtl">\u062a\u0627\u0631\u06cc\u062e: '+dateUr+'</div>';
+  html+='<div style="font-size:0.75rem;color:#555">Time: <b>'+timeStr+'</b></div>';
+  html+='</div></div>';
+
+  html+='<hr style="border:2px solid #1a3a6a;margin:10px 0">';
+
+  // Customer info
+  html+='<div style="display:flex;justify-content:space-between;background:#f0f4ff;border-radius:8px;padding:10px 14px;margin-bottom:12px">';
+  html+='<div><div style="font-size:0.7rem;color:#888;text-transform:uppercase">Customer / \u06af\u0627\u06c1\u06a9</div>';
+  html+='<div style="font-weight:bold;font-size:0.95rem" id="cb-custname">'+(custName||'\u2014')+'</div></div>';
+  html+='<div style="text-align:right"><div style="font-size:0.7rem;color:#888;text-transform:uppercase">Contact / \u0631\u0627\u0628\u0637\u06c1</div>';
+  html+='<div style="font-weight:bold;font-size:0.95rem" id="cb-contact">\u2014</div></div>';
+  html+='</div>';
+
+  // Gauge + Glass + Colour info bar
+  html+='<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">';
+  html+='<div style="background:#eef2ff;border-radius:6px;padding:8px 10px;flex:1;min-width:110px;text-align:center"><div style="font-size:0.68rem;color:#888">Aluminium Gauge</div><div style="font-weight:bold;color:#1a3a6a;font-size:0.95rem">'+gauge+'mm</div></div>';
+  html+='<div style="background:#e8f5e9;border-radius:6px;padding:8px 10px;flex:1;min-width:110px;text-align:center"><div style="font-size:0.68rem;color:#888">Glass / شیشہ</div><div style="font-weight:bold;color:#2e7d32;font-size:0.95rem">'+glassMm+'mm</div></div>';
+  html+='<div style="background:#fff3e0;border-radius:6px;padding:8px 10px;flex:1;min-width:110px;text-align:center"><div style="font-size:0.68rem;color:#888">Alu Colour / رنگ</div><div style="font-weight:bold;color:'+aluColourHex+';font-size:0.85rem">'+aluColour+'</div></div>';
+  html+='<div style="background:#fce4ec;border-radius:6px;padding:8px 10px;flex:1;min-width:110px;text-align:center"><div style="font-size:0.68rem;color:#888">Glass Colour / رنگ</div><div style="font-weight:bold;color:'+glassColourHex+';font-size:0.85rem">'+glassColour+'</div></div>';
+  html+='</div>';
+
+  // Table
+  html+='<table style="width:100%;border-collapse:collapse;margin-bottom:12px">';
+  html+='<thead><tr style="background:#1a3a6a;color:#fff">';
+  html+='<th style="padding:8px;border:1px solid #aaa;font-size:0.78rem;text-align:center">#</th>';
+  html+='<th style="padding:8px;border:1px solid #aaa;font-size:0.78rem;text-align:center">\u0648\u0646\u0688\u0648 \u0633\u0627\u0626\u0632<br>Window Size</th>';
+  html+='<th style="padding:8px;border:1px solid #aaa;font-size:0.78rem;text-align:center">Sqft</th>';
+  html+='<th style="padding:8px;border:1px solid #aaa;font-size:0.78rem;text-align:center">\u0631\u0642\u0645<br>Amount</th>';
+  html+='</tr></thead><tbody>';
+
+  var num=1;
+  if(framesList.length>0){
+    for(var fi2=0;fi2<framesList.length;fi2++){
+      var f=framesList[fi2];
+      for(var q2=0;q2<f.qty;q2++){
+        var sqft=(f.w*f.h)/144;
+        var prop=totalSqft>0?sqft/totalSqft:1;
+        var winAmt=Math.round(grandTotal*prop);
+        var bg=num%2===0?"#f8f8f8":"#ffffff";
+        html+='<tr style="background:'+bg+'">';
+        html+='<td style="padding:8px;border:1px solid #ddd;text-align:center;font-weight:bold">'+num+'</td>';
+        html+='<td style="padding:8px;border:1px solid #ddd;text-align:center;font-weight:bold;color:#1a3a6a">'+f.wRaw+' \u00d7 '+f.hRaw+'"</td>';
+        html+='<td style="padding:8px;border:1px solid #ddd;text-align:center;color:#666">'+sqft.toFixed(2)+'</td>';
+        html+='<td style="padding:8px;border:1px solid #ddd;text-align:center;font-weight:bold">Rs. '+winAmt.toLocaleString()+'</td>';
+        html+='</tr>';
+        num++;
+      }
+    }
+  }
+  html+='</tbody></table>';
+
+  // Totals box
+  html+='<div style="display:flex;justify-content:flex-end;margin-bottom:12px">';
+  html+='<table style="border-collapse:collapse;min-width:260px">';
+  html+='<tr style="background:#eef2ff"><td style="padding:8px 12px;border:1px solid #ddd;font-weight:bold">\u06a9\u0644 \u0631\u0642\u0645 / Total</td><td style="padding:8px 12px;border:1px solid #ddd;font-weight:bold;text-align:right">Rs. '+grandTotal.toLocaleString()+'</td></tr>';
+  html+='<tr><td style="padding:8px 12px;border:1px solid #ddd">\u0627\u06cc\u0688\u0648\u0627\u0646\u0633 / Advance</td><td style="padding:8px 12px;border:1px solid #ddd;text-align:right" id="cb-adv-val">Rs. 0</td></tr>';
+  html+='<tr style="background:#fff8e1"><td style="padding:8px 12px;border:1px solid #ddd;font-weight:bold;color:#b45309">\u0628\u0642\u0627\u06cc\u0627 / Remaining</td><td style="padding:8px 12px;border:1px solid #ddd;font-weight:bold;color:#b45309;text-align:right" id="cb-rem-val">Rs. '+grandTotal.toLocaleString()+'</td></tr>';
+  html+='</table></div>';
+
+  // Advance + Contact input
+  html+='<div style="background:#f5f5f5;border-radius:8px;padding:12px;margin-bottom:12px">';
+  html+='<div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">';
+  html+='<div><label style="font-size:0.78rem;font-weight:bold;color:#555">\u0627\u06cc\u0688\u0648\u0627\u0646\u0633 / Advance (Rs.)</label><br>';
+  html+='<input type="number" id="cb-advance" value="0" style="width:110px;padding:7px;border:1px solid #ccc;border-radius:6px;font-size:0.95rem;margin-top:3px" oninput="updateAdvance('+grandTotal+')"></div>';
+  html+='<div><label style="font-size:0.78rem;font-weight:bold;color:#555">\u0631\u0627\u0628\u0637\u06c1 / Contact</label><br>';
+  html+='<input type="text" id="cb-contact-input" placeholder="03XX-XXXXXXX" style="width:140px;padding:7px;border:1px solid #ccc;border-radius:6px;font-size:0.95rem;margin-top:3px" oninput="updateContact(this.value)"></div>';
+  html+='</div></div>';
+
+  // Thanks footer
+  html+='<hr style="border:1px solid #ddd;margin:10px 0">';
+  html+='<div style="text-align:center;font-size:0.78rem;color:#555">';
+  html+='<div style="font-weight:bold;color:#1a3a6a;margin-bottom:2px">Thank you for your business! / \u062a\u0634\u0631\u06cc\u0641 \u0622\u0648\u0631\u06cc \u06a9\u0627 \u0634\u06a9\u0631\u06cc\u06c1!</div>';
+  html+='<div>Adeel Welding & Aluminium House | \u0644\u0633\u0648\u0691\u06cc \u06a9\u0644\u0627\u06ba | 0321-7378024</div>';
+  html+='</div>';
+  html+='</div>';
+
+  document.getElementById('cust-bill-content').innerHTML=html;
+  document.getElementById('cust-bill-overlay').style.display='block';
+}
+function updateContact(val){
+  var el=document.getElementById('cb-contact');
+  if(el) el.textContent=val||'—';
+}
+
+function updateAdvance(total){
+  var adv=parseFloat(document.getElementById('cb-advance').value)||0;
+  var rem=total-adv;
+  document.getElementById('cb-adv-val').textContent='Rs. '+Math.round(adv).toLocaleString();
+  document.getElementById('cb-rem-val').textContent='Rs. '+Math.round(rem).toLocaleString();
+}
+
+function printCustomerBill(){
+  var bill=document.getElementById('printable-bill');
+  if(!bill){alert('Pehle Customer Bill generate karein!');return;}
+
+  // Create full screen white overlay
+  var existing=document.getElementById('print-overlay');
+  if(existing) existing.remove();
+
+  var overlay=document.createElement('div');
+  overlay.id='print-overlay';
+  overlay.style.cssText='position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:999999;overflow-y:auto;-webkit-overflow-scrolling:touch;box-sizing:border-box';
+
+  // Controls bar
+  var bar=document.createElement('div');
+  bar.style.cssText='position:sticky;top:0;background:#1a3a6a;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;z-index:1';
+
+  var backBtn=document.createElement('button');
+  backBtn.innerHTML='&#8592; BACK';
+  backBtn.style.cssText='background:#fff;color:#1a3a6a;border:none;border-radius:6px;padding:8px 14px;font-weight:bold;cursor:pointer;font-size:0.9rem';
+  backBtn.onclick=function(){ document.getElementById('print-overlay').remove(); };
+
+  var hint=document.createElement('div');
+  hint.style.cssText='color:#fff;font-size:0.72rem;text-align:center;line-height:1.4';
+  hint.innerHTML='PDF ke liye:<br><b>Share → Print → Save PDF</b>';
+
+  var pBtn=document.createElement('button');
+  pBtn.innerHTML='&#128424; Print';
+  pBtn.style.cssText='background:#c9a84c;color:#000;border:none;border-radius:6px;padding:8px 14px;font-weight:bold;cursor:pointer;font-size:0.9rem';
+  pBtn.onclick=function(){ window.print(); };
+
+  bar.appendChild(backBtn);
+  bar.appendChild(hint);
+  bar.appendChild(pBtn);
+  overlay.appendChild(bar);
+
+  // Bill content - clean copy without inputs
+  var wrap=document.createElement('div');
+  wrap.style.cssText='max-width:600px;margin:0 auto;padding:16px;background:#fff';
+
+  var clone=bill.cloneNode(true);
+  // Replace inputs with text spans
+  var inputs=clone.querySelectorAll('input');
+  for(var i=0;i<inputs.length;i++){
+    var sp=document.createElement('span');
+    sp.textContent=inputs[i].value||'—';
+    sp.style.fontWeight='bold';
+    inputs[i].parentNode.replaceChild(sp,inputs[i]);
+  }
+  // Remove the advance/contact edit section
+  var editSec=clone.querySelector('#cb-advance');
+  if(editSec && editSec.closest('div')) editSec.closest('div[style*="background:#f5"]').remove();
+
+  wrap.appendChild(clone);
+  overlay.appendChild(wrap);
+  document.body.appendChild(overlay);
+}
+
+
+window.onload=function(){
+  try{
+  // Show remaining subscription info
+  var info = getRemainingInfo();
+  if(info){
+    var bar = document.getElementById("subInfo");
+    if(bar){
+      bar.style.display = "flex";
+      document.getElementById("subDays").textContent = info.days+" din bache";
+      document.getElementById("subUses").textContent = info.uses+" uses bache";
+      // Warning colors
+      if(info.days <= 5) document.getElementById("subDays").style.color = "#ff6b6b";
+      if(info.uses <= 10) document.getElementById("subUses").style.color = "#ff6b6b";
+    }
+  }
+  document.getElementById("optBtn").onclick=runOptimizer;
+  document.getElementById("shop-btn").onclick=function(){buildShopCard();document.getElementById("shop-overlay").style.display="block";};
+  document.getElementById("bill-btn").onclick=function(){document.getElementById("bill-overlay").style.display="block";calcBill();};
+  document.getElementById("shopCloseBtn").onclick=function(){document.getElementById("shop-overlay").style.display="none";};
+  document.getElementById("billCloseBtn").onclick=function(){document.getElementById("bill-overlay").style.display="none";};
+  document.getElementById("calcBillBtn").onclick=calcBill;
+  document.getElementById("addXBtn").onclick=function(){var ta=document.getElementById("sizes"),s=ta.selectionStart,v=ta.value;ta.value=v.substring(0,s)+"x"+v.substring(s);ta.selectionStart=ta.selectionEnd=s+1;ta.focus();};
+  document.getElementById("saveBtn").onclick=saveRecord;
+  document.getElementById("pair-btn").onclick=buildPairingGuide;
+  document.getElementById("cut-table-btn").onclick=buildCuttingTable;
+  document.getElementById("cutTableCloseBtn").onclick=function(){document.getElementById("cut-table-overlay").style.display="none";};
+  document.getElementById("glassTableCloseBtn").onclick=function(){document.getElementById("glass-table-overlay").style.display="none";};
+  document.getElementById("pairCloseBtn").onclick=function(){document.getElementById("pair-overlay").style.display="none";};
+  document.getElementById("histBtn").onclick=function(){loadHistory("");document.getElementById("hist-overlay").style.display="block";};
+  document.getElementById("histCloseBtn").onclick=function(){document.getElementById("hist-overlay").style.display="none";};
+  document.getElementById("searchBtn").onclick=function(){loadHistory(document.getElementById("searchInput").value);};
+  document.getElementById("searchInput").onkeyup=function(e){if(e.keyCode===13)loadHistory(this.value);};
+  // if(!checkPw())showLock(); // temporarily disabled
+  }catch(e){console.error('Init error:',e);}
+};
+</script>
+<div class="overlay" id="cust-bill-overlay">
+  <div class="ov-inner">
+    <button class="close-btn" id="custBillCloseBtn" onclick="document.getElementById('cust-bill-overlay').style.display='none'">BACK</button>
+    <div id="cust-bill-content"></div>
+    <button id="custBillPdfBtn" onclick="printCustomerBill()" style="width:100%;background:#c9a84c;color:#000;border:none;border-radius:8px;padding:13px;font-size:1rem;font-weight:bold;cursor:pointer;margin-top:10px">📄 PDF / PRINT</button>
+  </div>
+</div>
+</body>
+</html>
